@@ -21,6 +21,7 @@ namespace battleship
         int loadingSpeed = 100;
         float initialPercentage = 0;
 
+        /* function in order to make the main menu options look between arrow when hovering*/
         private void Show_Arrows(int X1, int Y1, int X2, int Y2)
         {
             pictureBox1.Location = new Point(X1, Y1);
@@ -106,6 +107,9 @@ namespace battleship
             pictureBox3.Show();
         }
 
+        /* loading screen code start*/
+
+        /* timer1_tick contains the falling rockets effect by moving them and at the end of the groupbox they are instantaited again*/
         private void timer1_Tick(object sender, EventArgs e)
         {
             for (int i = 0; i < 9; i++)
@@ -173,6 +177,7 @@ namespace battleship
             }
         }
 
+        /* timer2_tick contains the explosion effect by simply moving slowly a panel which is covering the image */
         private void timer2_Tick(object sender, EventArgs e)
         {
             initialPercentage += loadingSpeed;
@@ -191,6 +196,9 @@ namespace battleship
             }
         }
 
+        /* loading screen code end */
+
+        /* initiate loading screen*/
         private void label2_Click(object sender, EventArgs e)
         {
             foreach (var lbl in Controls.OfType<Label>())
