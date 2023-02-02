@@ -98,14 +98,16 @@ namespace battleship
             if (p1 == "false")
             {
                 pictureBoxPlayer1.Hide();
-                textBox1.Hide();
-                MessageBox.Show("douleuei1");
+                pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
+                textBox2.Hide();
+                textBox2.Controls.Remove(textBox1);
             }
             else if (p2 == "false")
             {
                 pictureBoxPlayer2.Hide();
-                textBox2.Hide();
-                MessageBox.Show("douleuei2");
+                pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
+                textBox1.Hide();
+                textBox1.Controls.Remove(textBox2);
             }
 
             if (p1 == "false" && p2 == "false") timer_Pull.Stop();
@@ -373,23 +375,11 @@ namespace battleship
 
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
-            pictureBoxPlayer1.Hide();
-            pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
-            pictureBoxPlayer2.Hide();
-            pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
-            textBox2.Hide();
-            textBox2.Controls.Remove(textBox2);
             Push_Player_Choice("p1");
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
         {
-            pictureBoxPlayer2.Hide();
-            pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer1);
-            pictureBoxPlayer1.Hide();
-            pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer2);
-            textBox1.Hide();
-            textBox1.Controls.Remove(textBox1);
             Push_Player_Choice("p2");
         }
     }
