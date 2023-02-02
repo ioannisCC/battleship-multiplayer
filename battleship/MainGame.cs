@@ -52,10 +52,10 @@ namespace battleship
 
         private void MainGame_Load(object sender, EventArgs e)
         {
-            populateGrid(2, panel1, grid1, btnGrid1);
-            pictureBoxShip5.AllowDrop = true;
             dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
-            Player_Choice();
+            Initialize_Database();
+            populateGrid(2, panel1, grid1, btnGrid1);
+            pictureBoxShip5.AllowDrop = true;            
         }
         
         private void Wait()
@@ -66,14 +66,49 @@ namespace battleship
             }
         }
 
-        private void Player_Choice()
+        private void Initialize_Database()
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateX = Builders<BsonDocument>.Update.Set("x", 0);
+            var updateY = Builders<BsonDocument>.Update.Set("y", 0);
+            var updateTmp = Builders<BsonDocument>.Update.Set("tmp", 0);
+            var updateP1 = Builders<BsonDocument>.Update.Set("p1", true);
+            var updateP2 = Builders<BsonDocument>.Update.Set("p2", true);
+            collection.UpdateOne(filter, updateX);
+            collection.UpdateOne(filter, updateY);
+            collection.UpdateOne(filter, updateTmp);
+            collection.UpdateOne(filter, updateP1);
+            collection.UpdateOne(filter, updateP2);
+        }
+
+        private void Pull_Player_Choice()
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
             string[] words = document.ToString().Split(',');
-            foreach (var word in words)
-                MessageBox.Show(word);
+            if (words[5] == "p1: false")
+            {
+                pictureBoxPlayer1.Hide();
+                textBox1.Hide();
+            }
+            else if (words[6] == "p2: false}")
+            {
+                pictureBoxPlayer2.Hide();
+                textBox2.Hide();
+            }
+
+        }
+
+        private void Push_Player_Choice(string p)
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateP = Builders<BsonDocument>.Update.Set(p, false);
+            collection.UpdateOne(filter, updateP);
         }
 
         private void populateGrid(int offset, Panel panel, Grid grid, Button[,] btnGrid)
@@ -330,6 +365,7 @@ namespace battleship
             pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
             textBox2.Hide();
             textBox2.Controls.Remove(textBox2);
+            Push_Player_Choice("p1");
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
@@ -340,6 +376,7 @@ namespace battleship
             pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer2);
             textBox1.Hide();
             textBox1.Controls.Remove(textBox1);
+            Push_Player_Choice("p2");
         }
     }
 }
