@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace battleship
+<<<<<<< HEAD
     //test
+=======
+>>>>>>> d8c200267686ddb2df5c8b1a173d368bf28d7fd3
 {   /* username: battleshipGame
      * password: unipi */
     public partial class MainGame : Form
