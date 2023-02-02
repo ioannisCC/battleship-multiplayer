@@ -36,16 +36,23 @@
             this.pictureBoxShip4 = new System.Windows.Forms.PictureBox();
             this.pictureBoxShip2 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.pictureBoxPlayer2 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxPlayer1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(48, 35);
+            this.button1.Location = new System.Drawing.Point(592, 68);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(156, 63);
             this.button1.TabIndex = 3;
@@ -129,6 +136,59 @@
             this.panel2.Size = new System.Drawing.Size(550, 550);
             this.panel2.TabIndex = 1;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Minecraft", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(286, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 48);
+            this.label1.TabIndex = 4;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.White;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Font = new System.Drawing.Font("Minecraft", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(82, 66);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(152, 30);
+            this.textBox1.TabIndex = 5;
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.Color.White;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Font = new System.Drawing.Font("Minecraft", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(1099, 84);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(152, 30);
+            this.textBox2.TabIndex = 6;
+            // 
+            // pictureBoxPlayer2
+            // 
+            this.pictureBoxPlayer2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer2.Image")));
+            this.pictureBoxPlayer2.Location = new System.Drawing.Point(1055, 32);
+            this.pictureBoxPlayer2.Name = "pictureBoxPlayer2";
+            this.pictureBoxPlayer2.Size = new System.Drawing.Size(260, 150);
+            this.pictureBoxPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxPlayer2.TabIndex = 7;
+            this.pictureBoxPlayer2.TabStop = false;
+            this.pictureBoxPlayer2.Click += new System.EventHandler(this.pictureBoxPlayer2_Click);
+            // 
+            // pictureBoxPlayer1
+            // 
+            this.pictureBoxPlayer1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer1.Image")));
+            this.pictureBoxPlayer1.Location = new System.Drawing.Point(46, 33);
+            this.pictureBoxPlayer1.Name = "pictureBoxPlayer1";
+            this.pictureBoxPlayer1.Size = new System.Drawing.Size(249, 149);
+            this.pictureBoxPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxPlayer1.TabIndex = 8;
+            this.pictureBoxPlayer1.TabStop = false;
+            this.pictureBoxPlayer1.Click += new System.EventHandler(this.pictureBoxPlayer1_Click);
+            // 
             // MainGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +197,11 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
+            this.Controls.Add(this.pictureBoxPlayer1);
+            this.Controls.Add(this.pictureBoxPlayer2);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
@@ -152,7 +217,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -164,5 +232,10 @@
         private System.Windows.Forms.PictureBox pictureBoxShip2;
         private System.Windows.Forms.PictureBox pictureBoxShip5;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.PictureBox pictureBoxPlayer2;
+        private System.Windows.Forms.PictureBox pictureBoxPlayer1;
     }
 }

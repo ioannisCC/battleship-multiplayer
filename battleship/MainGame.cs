@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace battleship
-{
+{   /* username: battleshipGame
+     * password: unipi */
     public partial class MainGame : Form
     {
         static Grid grid1 = new Grid(10);
@@ -17,10 +20,12 @@ namespace battleship
         public Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
         public Button[,] btnGrid2 = new Button[grid2.Size, grid2.Size];
         int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0;
-        public bool stopDragDrop = true;
+        public bool stopDragDrop = true, wait = true;
         bool exist = false;
         Point offset;
         Point mousePosition;
+        MongoClient dbClient;
+        public static string name;
 
         public MainGame()
         {
@@ -49,6 +54,26 @@ namespace battleship
         {
             populateGrid(2, panel1, grid1, btnGrid1);
             pictureBoxShip5.AllowDrop = true;
+            dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
+            Player_Choice();
+        }
+        
+        private void Wait()
+        {
+            while(wait)
+            {
+
+            }
+        }
+
+        private void Player_Choice()
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
+            string[] words = document.ToString().Split(',');
+            foreach (var word in words)
+                MessageBox.Show(word);
         }
 
         private void populateGrid(int offset, Panel panel, Grid grid, Button[,] btnGrid)
@@ -96,6 +121,13 @@ namespace battleship
             Button clicked = sender as Button; /* as operator functions as cast */
             //clicked.BackColor = Color.Red;
             clicked.Image = Image.FromFile("png-transparent-explosion-animation-sprite-blast-orange-special-effects-particle-system-thumbnail.png");
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateX = Builders<BsonDocument>.Update.Set("x", Int32.Parse(clicked.Text.Substring(0, 1)));
+            var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length-1)));
+            collection.UpdateOne(filter, updateX);
+            collection.UpdateOne(filter, updateY);
         }
 
         private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
@@ -159,7 +191,7 @@ namespace battleship
                 }*/
                 panel1.Width = panel1.Width / 2;
                 populateGrid(1, panel2, grid2, btnGrid2);
-                depopulateGrid(grid1, btnGrid1);
+                //depopulateGrid(grid1, btnGrid1);
                 /*PictureBox pictureBoxSea = new PictureBox();
                 pictureBoxSea.Size = panel1.Size;
                 pictureBoxSea.Location = panel1.Location;
@@ -290,5 +322,24 @@ namespace battleship
 
         /* movement & rotation for each piscturebox end */
 
+        private void pictureBoxPlayer1_Click(object sender, EventArgs e)
+        {
+            pictureBoxPlayer1.Hide();
+            pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
+            pictureBoxPlayer2.Hide();
+            pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
+            textBox2.Hide();
+            textBox2.Controls.Remove(textBox2);
+        }
+
+        private void pictureBoxPlayer2_Click(object sender, EventArgs e)
+        {
+            pictureBoxPlayer2.Hide();
+            pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer1);
+            pictureBoxPlayer1.Hide();
+            pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer2);
+            textBox1.Hide();
+            textBox1.Controls.Remove(textBox1);
+        }
     }
 }
