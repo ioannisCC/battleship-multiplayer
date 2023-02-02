@@ -92,19 +92,27 @@ namespace battleship
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
+            /* to kanoume epidh den jeroume pws na paroume to value twn pi, p2 kateyueian */
             string[] words = document.ToString().Split(',');
-            if (words[4] == "p1: false")
+            string[] tempP = words[4].Split(':');
+            string p1 = tempP[1].Substring(1, tempP[1].Length-1);
+            tempP = words[5].Split(':');
+            string p2 = tempP[1].Substring(1, tempP[1].Length-3);
+
+            if (p1 == "false")
             {
                 pictureBoxPlayer1.Hide();
                 textBox1.Hide();
+                MessageBox.Show("douleuei1");
             }
-            else if (words[5] == "p2: false}")
+            else if (p2 == "false")
             {
                 pictureBoxPlayer2.Hide();
                 textBox2.Hide();
+                MessageBox.Show("douleuei2");
             }
 
-            if (words[4] == "p1: false" && words[5] == "p2: false}") timer_Pull.Stop();
+            if (p1 == "false" && p2 == "false") timer_Pull.Stop();
         }
 
         private void timer_Pull_Tick(object sender, EventArgs e)
