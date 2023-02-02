@@ -93,17 +93,23 @@ namespace battleship
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
             string[] words = document.ToString().Split(',');
-            if (words[5] == "p1: false")
+            if (words[4] == "p1: false")
             {
                 pictureBoxPlayer1.Hide();
                 textBox1.Hide();
             }
-            else if (words[6] == "p2: false}")
+            else if (words[5] == "p2: false}")
             {
                 pictureBoxPlayer2.Hide();
                 textBox2.Hide();
             }
 
+            if (words[4] == "p1: false" && words[5] == "p2: false}") timer_Pull.Stop();
+        }
+
+        private void timer_Pull_Tick(object sender, EventArgs e)
+        {
+            Pull_Player_Choice();
         }
 
         private void Push_Player_Choice(string p)

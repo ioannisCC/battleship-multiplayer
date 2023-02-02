@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGame));
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -41,6 +42,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.pictureBoxPlayer2 = new System.Windows.Forms.PictureBox();
             this.pictureBoxPlayer1 = new System.Windows.Forms.PictureBox();
+            this.timer_Pull = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).BeginInit();
@@ -189,6 +191,12 @@
             this.pictureBoxPlayer1.TabStop = false;
             this.pictureBoxPlayer1.Click += new System.EventHandler(this.pictureBoxPlayer1_Click);
             // 
+            // timer_Pull
+            // 
+            this.timer_Pull.Enabled = true;
+            this.timer_Pull.Interval = 1000;
+            this.timer_Pull.Tick += new System.EventHandler(this.timer_Pull_Tick);
+            // 
             // MainGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,5 +245,6 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.PictureBox pictureBoxPlayer2;
         private System.Windows.Forms.PictureBox pictureBoxPlayer1;
+        private System.Windows.Forms.Timer timer_Pull;
     }
 }
