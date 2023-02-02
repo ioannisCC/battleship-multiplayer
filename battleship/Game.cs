@@ -204,10 +204,15 @@ namespace battleship
             foreach (var lbl in Controls.OfType<Label>())
                 lbl.Hide();
             this.BackColor = Color.White;
+            this.Size = new Size(400, 704);
+            this.CenterToScreen();
             this.BackgroundImage = null;
             groupBox1.Show();
             timer1.Start();
             timer2.Start();
+            /*GraphicsPath shape = new GraphicsPath();
+            shape.AddEllipse(0, 0, 50, 50);
+            this.Region = new Region(shape);*/
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)

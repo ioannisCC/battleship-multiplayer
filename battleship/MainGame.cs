@@ -17,6 +17,8 @@ namespace battleship
         public Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
         public Button[,] btnGrid2 = new Button[grid2.Size, grid2.Size];
         int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0;
+        public bool stopDragDrop = true;
+        bool exist = false;
         Point offset;
         Point mousePosition;
 
@@ -63,11 +65,15 @@ namespace battleship
                     btnGrid[i, j].Width = buttonSize;
                     btnGrid[i, j].AllowDrop = true;
 
-                    btnGrid[i, j].Click += Grid_Button_Click;
+                    if (exist)
+                        btnGrid2[i, j].Click += new EventHandler(Grid_Button_Click);
 
                     panel.Controls.Add(btnGrid[i, j]);
                     btnGrid[i, j].Location = new Point(i * buttonSize, j * buttonSize);
-                    btnGrid[i, j].BackColor = Color.DarkGray;
+                    //btnGrid[i, j].BackColor = Color.Transparent;
+                    //btnGrid[i, j].ForeColor = Color.Transparent;
+                    btnGrid[i, j].UseVisualStyleBackColor = true;
+                    //btnGrid[i, j].FlatAppearance.MouseOverBackColor = Color.FromArgb(100, Color.Black);
 
                     btnGrid[i, j].Text = i + "|" + j;
                 }
@@ -76,7 +82,7 @@ namespace battleship
 
         private void depopulateGrid(Grid grid, Button[,] btnGrid)
         {
-            for (int i=0; i < grid.Size; i++)
+            for (int i = 0; i < grid.Size; i++)
             {
                 for (int j = 0; j < grid.Size; j++)
                 {
@@ -87,7 +93,9 @@ namespace battleship
 
         private void Grid_Button_Click(object sender, EventArgs e)
         {
-            //
+            Button clicked = sender as Button; /* as operator functions as cast */
+            //clicked.BackColor = Color.Red;
+            clicked.Image = Image.FromFile("png-transparent-explosion-animation-sprite-blast-orange-special-effects-particle-system-thumbnail.png");
         }
 
         private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
@@ -106,6 +114,7 @@ namespace battleship
                     if (pictureBox.Bounds.IntersectsWith(btnGrid1[i, j].Bounds))
                     {
                         btnMultitude++;
+                        grid1.theGrid[i, j].CurrentlyOccupied = true;
                     }
                 }
             }
@@ -122,6 +131,11 @@ namespace battleship
             }
             else
             {
+                grid1.ClearGrid();
+                Check_DragDrop(pictureBoxShip5);
+                Check_DragDrop(pictureBoxShip4);
+                Check_DragDrop(pictureBoxShip3);
+                Check_DragDrop(pictureBoxShip2);
                 return true;
             }
         }
@@ -129,23 +143,31 @@ namespace battleship
         /* check positioning and start game */
         private void button1_Click(object sender, EventArgs e)
         {
-            if(!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
+            if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
             Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
             Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
-            Check_Positioning(pictureBoxShip2, 2, "submarine"))) 
+            Check_Positioning(pictureBoxShip2, 2, "submarine")))
             { }
             else
             {
+                exist = true;
+                stopDragDrop = false;
+                /*foreach (var ocp in grid1.theGrid)
+                {
+                    if (ocp.CurrentlyOccupied)
+                        //MessageBox.Show(ocp.ToString());
+                }*/
                 panel1.Width = panel1.Width / 2;
                 populateGrid(1, panel2, grid2, btnGrid2);
                 depopulateGrid(grid1, btnGrid1);
-                PictureBox pictureBoxSea = new PictureBox();
+                /*PictureBox pictureBoxSea = new PictureBox();
                 pictureBoxSea.Size = panel1.Size;
                 pictureBoxSea.Location = panel1.Location;
                 pictureBoxSea.ImageLocation = "istockphoto-1385726058-612x612.jpg";
                 pictureBoxSea.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxSea.BringToFront();
-            }            
+                Controls.Add(pictureBoxSea);*/
+            }
         }
 
         void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
@@ -194,65 +216,76 @@ namespace battleship
         }
 
         /* movement & rotation for each piscturebox start */
-
         private void pictureBoxShip5_MouseDown(object sender, MouseEventArgs e)
         {
-            Location_Offset(e, pictureBoxShip5);
+            if (stopDragDrop)
+                Location_Offset(e, pictureBoxShip5);
         }
 
         private void pictureBoxShip5_MouseMove(object sender, MouseEventArgs e)
         {
-            Transition_Glitch(e, pictureBoxShip5);
+            if (stopDragDrop)
+                Transition_Glitch(e, pictureBoxShip5);
         }
 
         private void pictureBoxShip5_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Rotate(counter1, pictureBoxShip5);
+            if (stopDragDrop)
+                Rotate(counter1, pictureBoxShip5);
         }
 
         private void pictureBoxShip4_MouseDown(object sender, MouseEventArgs e)
         {
-            Location_Offset(e,pictureBoxShip4);
+            if (stopDragDrop)
+                Location_Offset(e,pictureBoxShip4);
         }
 
         private void pictureBoxShip4_MouseMove(object sender, MouseEventArgs e)
         {
-            Transition_Glitch(e,pictureBoxShip4);
+            if (stopDragDrop)
+                Transition_Glitch(e,pictureBoxShip4);
         }
 
         private void pictureBoxShip4_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Rotate(counter2, pictureBoxShip4);
+            if (stopDragDrop)
+                Rotate(counter2, pictureBoxShip4);
         }
 
         private void pictureBoxShip3_MouseDown(object sender, MouseEventArgs e)
         {
-            Location_Offset(e, pictureBoxShip3);
+            if (stopDragDrop)
+                Location_Offset(e, pictureBoxShip3);
         }
 
         private void pictureBoxShip3_MouseMove(object sender, MouseEventArgs e)
         {
-            Transition_Glitch(e, pictureBoxShip3);
+            if (stopDragDrop)
+                Transition_Glitch(e, pictureBoxShip3);
         }
 
         private void pictureBoxShip3_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Rotate(counter3, pictureBoxShip3);
+            if (stopDragDrop)
+                Rotate(counter3, pictureBoxShip3);
         }
 
         private void pictureBoxShip2_MouseDown(object sender, MouseEventArgs e)
         {
-            Location_Offset(e,pictureBoxShip2);
+            if (stopDragDrop)
+                Location_Offset(e,pictureBoxShip2);
         }
 
         private void pictureBoxShip2_MouseMove(object sender, MouseEventArgs e)
         {
-            Transition_Glitch(e,pictureBoxShip2);
+            if (stopDragDrop)
+                Transition_Glitch(e,pictureBoxShip2);
         }
 
         private void pictureBoxShip2_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            Rotate(counter4, pictureBoxShip2);
+            if (stopDragDrop)
+                Rotate(counter4, pictureBoxShip2);
         }
 
         /* movement & rotation for each piscturebox end */

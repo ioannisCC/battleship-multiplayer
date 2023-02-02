@@ -200,7 +200,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Location = new System.Drawing.Point(503, 336);
+            this.panel2.Location = new System.Drawing.Point(139, 336);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 188);
             this.panel2.TabIndex = 11;
@@ -209,7 +209,7 @@
             // 
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
-            this.pictureBox4.Location = new System.Drawing.Point(406, 326);
+            this.pictureBox4.Location = new System.Drawing.Point(42, 326);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(374, 188);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -220,7 +220,7 @@
             // 
             this.pictureBox5.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(418, 19);
+            this.pictureBox5.Location = new System.Drawing.Point(54, 19);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(362, 195);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -234,7 +234,7 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Minecraft", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(589, 703);
+            this.label6.Location = new System.Drawing.Point(225, 703);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 27);
             this.label6.TabIndex = 12;
@@ -251,7 +251,7 @@
             this.panel1.Controls.Add(this.pictureBox7);
             this.panel1.Controls.Add(this.pictureBox6);
             this.panel1.Controls.Add(this.pictureBox13);
-            this.panel1.Location = new System.Drawing.Point(493, 207);
+            this.panel1.Location = new System.Drawing.Point(129, 207);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(236, 142);
             this.panel1.TabIndex = 10;
