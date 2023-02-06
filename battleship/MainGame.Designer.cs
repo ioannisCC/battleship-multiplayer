@@ -54,11 +54,13 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(592, 68);
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(789, 84);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(156, 63);
+            this.button1.Size = new System.Drawing.Size(354, 87);
             this.button1.TabIndex = 3;
-            this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -66,21 +68,25 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.pictureBoxPlayer2);
+            this.panel1.Controls.Add(this.pictureBoxPlayer1);
             this.panel1.Controls.Add(this.pictureBoxShip5);
             this.panel1.Controls.Add(this.pictureBoxShip3);
             this.panel1.Controls.Add(this.pictureBoxShip4);
             this.panel1.Controls.Add(this.pictureBoxShip2);
-            this.panel1.Location = new System.Drawing.Point(32, 231);
+            this.panel1.Location = new System.Drawing.Point(43, 284);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1100, 550);
+            this.panel1.Size = new System.Drawing.Size(1467, 677);
             this.panel1.TabIndex = 0;
             // 
             // pictureBoxShip5
             // 
             this.pictureBoxShip5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip5.Image")));
-            this.pictureBoxShip5.Location = new System.Drawing.Point(797, 103);
+            this.pictureBoxShip5.Location = new System.Drawing.Point(1143, 127);
+            this.pictureBoxShip5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxShip5.Name = "pictureBoxShip5";
-            this.pictureBoxShip5.Size = new System.Drawing.Size(240, 30);
+            this.pictureBoxShip5.Size = new System.Drawing.Size(320, 37);
             this.pictureBoxShip5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxShip5.TabIndex = 7;
             this.pictureBoxShip5.TabStop = false;
@@ -92,7 +98,8 @@
             // 
             this.pictureBoxShip3.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip3.Image")));
-            this.pictureBoxShip3.Location = new System.Drawing.Point(902, 224);
+            this.pictureBoxShip3.Location = new System.Drawing.Point(1328, 263);
+            this.pictureBoxShip3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxShip3.Name = "pictureBoxShip3";
             this.pictureBoxShip3.Size = new System.Drawing.Size(135, 31);
             this.pictureBoxShip3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -106,7 +113,8 @@
             // 
             this.pictureBoxShip4.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip4.Image")));
-            this.pictureBoxShip4.Location = new System.Drawing.Point(837, 154);
+            this.pictureBoxShip4.Location = new System.Drawing.Point(1263, 187);
+            this.pictureBoxShip4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxShip4.Name = "pictureBoxShip4";
             this.pictureBoxShip4.Size = new System.Drawing.Size(200, 40);
             this.pictureBoxShip4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -120,7 +128,8 @@
             // 
             this.pictureBoxShip2.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip2.Image")));
-            this.pictureBoxShip2.Location = new System.Drawing.Point(956, 274);
+            this.pictureBoxShip2.Location = new System.Drawing.Point(1382, 336);
+            this.pictureBoxShip2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxShip2.Name = "pictureBoxShip2";
             this.pictureBoxShip2.Size = new System.Drawing.Size(81, 27);
             this.pictureBoxShip2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -133,63 +142,75 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Location = new System.Drawing.Point(756, 231);
+            this.panel2.Location = new System.Drawing.Point(1008, 284);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(550, 550);
+            this.panel2.Size = new System.Drawing.Size(733, 677);
             this.panel2.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Minecraft", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(286, 50);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(381, 62);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 48);
+            this.label1.Size = new System.Drawing.Size(0, 69);
             this.label1.TabIndex = 4;
             // 
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Font = new System.Drawing.Font("Minecraft", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(82, 66);
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(109, 81);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(152, 30);
+            this.textBox1.Size = new System.Drawing.Size(203, 39);
             this.textBox1.TabIndex = 5;
             // 
             // textBox2
             // 
             this.textBox2.BackColor = System.Drawing.Color.White;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Font = new System.Drawing.Font("Minecraft", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(1099, 84);
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(1465, 103);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(152, 30);
+            this.textBox2.Size = new System.Drawing.Size(203, 39);
             this.textBox2.TabIndex = 6;
             // 
             // pictureBoxPlayer2
             // 
             this.pictureBoxPlayer2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxPlayer2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer2.Image")));
-            this.pictureBoxPlayer2.Location = new System.Drawing.Point(1055, 32);
+            this.pictureBoxPlayer2.Location = new System.Drawing.Point(909, 4);
+            this.pictureBoxPlayer2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxPlayer2.Name = "pictureBoxPlayer2";
-            this.pictureBoxPlayer2.Size = new System.Drawing.Size(260, 150);
-            this.pictureBoxPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxPlayer2.Size = new System.Drawing.Size(533, 673);
+            this.pictureBoxPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPlayer2.TabIndex = 7;
             this.pictureBoxPlayer2.TabStop = false;
             this.pictureBoxPlayer2.Click += new System.EventHandler(this.pictureBoxPlayer2_Click);
+            this.pictureBoxPlayer2.MouseEnter += new System.EventHandler(this.pictureBoxPlayer2_MouseEnter);
+            this.pictureBoxPlayer2.MouseLeave += new System.EventHandler(this.pictureBoxPlayer2_MouseLeave);
             // 
             // pictureBoxPlayer1
             // 
             this.pictureBoxPlayer1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxPlayer1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer1.Image")));
-            this.pictureBoxPlayer1.Location = new System.Drawing.Point(46, 33);
+            this.pictureBoxPlayer1.Location = new System.Drawing.Point(4, 5);
+            this.pictureBoxPlayer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBoxPlayer1.Name = "pictureBoxPlayer1";
-            this.pictureBoxPlayer1.Size = new System.Drawing.Size(249, 149);
-            this.pictureBoxPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBoxPlayer1.Size = new System.Drawing.Size(504, 652);
+            this.pictureBoxPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxPlayer1.TabIndex = 8;
             this.pictureBoxPlayer1.TabStop = false;
             this.pictureBoxPlayer1.Click += new System.EventHandler(this.pictureBoxPlayer1_Click);
+            this.pictureBoxPlayer1.MouseEnter += new System.EventHandler(this.pictureBoxPlayer1_MouseEnter);
+            this.pictureBoxPlayer1.MouseLeave += new System.EventHandler(this.pictureBoxPlayer1_MouseLeave);
             // 
             // timer_Pull
             // 
@@ -199,14 +220,12 @@
             // 
             // MainGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1362, 801);
-            this.Controls.Add(this.pictureBoxPlayer1);
-            this.Controls.Add(this.pictureBoxPlayer2);
+            this.ClientSize = new System.Drawing.Size(1816, 986);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -214,6 +233,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "battleship";

@@ -60,8 +60,8 @@ namespace battleship
         private void Game_Load(object sender, EventArgs e)
         {
             pictureBox3.Hide();
-            label5.Hide();
             groupBox1.Hide();
+            labelInstructions.Hide();
         }        
 
         private void label2_MouseLeave(object sender, EventArgs e)
@@ -103,8 +103,10 @@ namespace battleship
         {
             foreach(var lbl in Controls.OfType<Label>())
                lbl.Hide();
-            label5.Show();
+
             pictureBox3.Show();
+            labelInstructions.Show();
+            
         }
 
         /* loading screen code start*/
@@ -217,12 +219,11 @@ namespace battleship
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            label5.Hide();
             pictureBox3.Hide();
-            label1.Show();
             label2.Show();
             label3.Show();
             label4.Show();
+            labelInstructions.Hide();
         }
     }
 }

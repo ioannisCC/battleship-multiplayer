@@ -54,8 +54,13 @@ namespace battleship
         {
             dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
             Initialize_Database();
-            populateGrid(2, panel1, grid1, btnGrid1);
+          //  populateGrid(2, panel1, grid1, btnGrid1);
             pictureBoxShip5.AllowDrop = true;            
+            pictureBoxShip2.Hide();
+            pictureBoxShip3.Hide();
+            pictureBoxShip4.Hide();
+            pictureBoxShip5.Hide();
+            button1.Hide();       
         }
         
         private void Wait()
@@ -88,7 +93,7 @@ namespace battleship
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
-            /* to kanoume epidh den jeroume pws na paroume to value twn pi, p2 kateyueian */
+            /* to kanoume epidh den jeroume pws na paroume to value twn p1, p2 kateyueian */
             string[] words = document.ToString().Split(',');
             string[] tempP = words[4].Split(':');
             string p1 = tempP[1].Substring(1, tempP[1].Length-1);
@@ -152,8 +157,16 @@ namespace battleship
                     //btnGrid[i, j].FlatAppearance.MouseOverBackColor = Color.FromArgb(100, Color.Black);
 
                     btnGrid[i, j].Text = i + "|" + j;
+
+                  //  btnGrid[i, j].Hide();
                 }
             }
+
+            pictureBoxShip2.Show();
+            pictureBoxShip3.Show();
+            pictureBoxShip4.Show();
+            pictureBoxShip5.Show();
+            button1.Show();
         }
 
         private void depopulateGrid(Grid grid, Button[,] btnGrid)
@@ -359,11 +372,13 @@ namespace battleship
                 Location_Offset(e,pictureBoxShip2);
         }
 
+
         private void pictureBoxShip2_MouseMove(object sender, MouseEventArgs e)
         {
             if (stopDragDrop)
                 Transition_Glitch(e,pictureBoxShip2);
         }
+
 
         private void pictureBoxShip2_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -373,14 +388,38 @@ namespace battleship
 
         /* movement & rotation for each piscturebox end */
 
+        private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+        }
+
+        private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBoxPlayer1.ImageLocation = "Captain1.png";
+        }
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
             Push_Player_Choice("p1");
+            pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+            populateGrid(2, panel1, grid1, btnGrid1);
+
+        }
+
+        private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+        }
+
+        private void pictureBoxPlayer2_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBoxPlayer2.ImageLocation = "Captain2.png";
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
         {
             Push_Player_Choice("p2");
+            pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+            populateGrid(2, panel1, grid1, btnGrid1);
         }
     }
 }
