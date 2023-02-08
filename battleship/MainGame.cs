@@ -246,10 +246,12 @@ namespace battleship
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("p1Ready", false);
-            var document = collection.Find(filter).FirstOrDefault();
-            var p1Ready = document["p1Ready"].AsBoolean;
-            var p2Ready = document["p2Ready"].AsBoolean;
+            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", !false);
+            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", !false);
+            var documentP1 = collection.Find(filterP1).FirstOrDefault();
+            var documentP2 = collection.Find(filterP2).FirstOrDefault();
+            var p1Ready = documentP1["p1Ready"].AsBoolean;
+            var p2Ready = documentP2["p2Ready"].AsBoolean;
             if ((Check_DragDrop(pictureBox) != multitude) || p1Ready != null || p2Ready != null)
             {
                 MessageBox.Show("wrong positioning on ship " + name);
