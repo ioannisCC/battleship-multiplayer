@@ -129,12 +129,15 @@ namespace battleship
                 PictureBoxPlayer2 = false;
             }
 
-            
         }
 
         private void timer_Pull_Tick(object sender, EventArgs e)
         {
             Pull_Player_Choice();
+            if (!PictureBoxPlayer1)     //gia na menei topika kitrino
+                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+            if (!PictureBoxPlayer2)
+                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
         }
 
         private void Push_Player_Choice(string p)
@@ -413,8 +416,8 @@ namespace battleship
 
             if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
                 pictureBoxPlayer1.ImageLocation = "Captain1.png";
-            else
-                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+           // else
+            //    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
         }
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
@@ -436,8 +439,8 @@ namespace battleship
         {
             if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
                 pictureBoxPlayer2.ImageLocation = "Captain2.png";
-            else
-                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+         //   else
+           //     pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
