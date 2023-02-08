@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Amazon.Runtime.Documents;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
+        int player = 0;
         bool secondStage = false;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
@@ -343,7 +345,7 @@ namespace battleship
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            if (!PictureBoxPlayer1)
+            if (player == 1)
             {
                 P1();
             }                
@@ -516,6 +518,7 @@ namespace battleship
             private void pictureBoxPlayer1_Click(object sender, EventArgs e)
             {
                 if (PictureBoxPlayer1 && allowClick) {
+                    player = 1;
                     Push_Player_Choice("p1");
                     pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
                     PictureBoxPlayer1 = false;
@@ -540,6 +543,7 @@ namespace battleship
             private void pictureBoxPlayer2_Click(object sender, EventArgs e)
             {
                 if (PictureBoxPlayer2 && allowClick) {
+                    player = 2;
                     Push_Player_Choice("p2");
                     pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
                     PictureBoxPlayer2 = false;
