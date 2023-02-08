@@ -156,7 +156,7 @@ namespace battleship
                     btnGrid[i, j].UseVisualStyleBackColor = true;
                     //btnGrid[i, j].FlatAppearance.MouseOverBackColor = Color.FromArgb(100, Color.Black);
 
-                    btnGrid[i, j].Text = i + "|" + j;
+                 //   btnGrid[i, j].Text = i + "|" + j;
 
                   //  btnGrid[i, j].Hide();
                 }
