@@ -63,15 +63,12 @@ namespace battleship
             pictureBoxShip3.Hide();
             pictureBoxShip4.Hide();
             pictureBoxShip5.Hide();
-            button1.Hide();       
+            buttonStart.Hide();       
         }
         
         private void Wait()
         {
-            while(wait)
-            {
-
-            }
+            //while (wait) ;
         }
 
         private void Initialize_Database()
@@ -84,11 +81,20 @@ namespace battleship
             var updateTmp = Builders<BsonDocument>.Update.Set("tmp", 0);
             var updateP1 = Builders<BsonDocument>.Update.Set("p1", true);
             var updateP2 = Builders<BsonDocument>.Update.Set("p2", true);
+            var updateP1Name = Builders<BsonDocument>.Update.Set("p1Name", "");
+            var updateP2Name = Builders<BsonDocument>.Update.Set("p2Name", "");
+            var updateP1Ready = Builders<BsonDocument>.Update.Set("p1Ready", false);
+            var updateP2Ready = Builders<BsonDocument>.Update.Set("p2Ready", false);
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
             collection.UpdateOne(filter, updateTmp);
             collection.UpdateOne(filter, updateP1);
             collection.UpdateOne(filter, updateP2);
+            collection.UpdateOne(filter, updateP1Name);
+            collection.UpdateOne(filter, updateP2Name);
+            collection.UpdateOne(filter, updateP1Ready);
+            collection.UpdateOne(filter, updateP2Ready);
+
         }
 
         private void Pull_Player_Choice()
@@ -183,7 +189,7 @@ namespace battleship
             pictureBoxShip3.Show();
             pictureBoxShip4.Show();
             pictureBoxShip5.Show();
-            button1.Show();
+            buttonStart.Show();
         }
 
         private void depopulateGrid(Grid grid, Button[,] btnGrid)
@@ -209,6 +215,7 @@ namespace battleship
             var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length-1)));
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
+            Wait();
         }
 
         private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
@@ -237,6 +244,12 @@ namespace battleship
         /* check if each ship placed correctly (number of cells occupying) */
         private bool Check_Positioning(PictureBox pictureBox, int multitude, string name)
         {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("p1Ready", true);
+            var document = collection.Find(filter).FirstOrDefault();
+            var desired = document["p1Ready"].AsBoolean;
+            MessageBox.Show(desired.ToString());
             if (Check_DragDrop(pictureBox) != multitude)
             {
                 MessageBox.Show("wrong positioning on ship " + name);
@@ -254,7 +267,7 @@ namespace battleship
         }
 
         /* check positioning and start game */
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonStart_Click(object sender, EventArgs e)
         {
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
             Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
@@ -419,6 +432,7 @@ namespace battleship
            // else
             //    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
         }
+
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
             if (PictureBoxPlayer1 && allowClick) { 

@@ -194,8 +194,7 @@ namespace battleship
                 this.timer2.Stop();
                 this.Hide();
                 MainGame instance = new MainGame();
-                instance.Show();
-                instance.Activate();
+                instance.Show();                
             }
         }
 
