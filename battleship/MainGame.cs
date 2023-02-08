@@ -271,18 +271,29 @@ namespace battleship
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", false);
-            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", false);
+            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", true);
+            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", true);
             var documentP1 = collection.Find(filterP1).FirstOrDefault();
             var documentP2 = collection.Find(filterP2).FirstOrDefault();
             var (p1Ready, p2Ready) = (false, false);
-            try {
+            try
+            {
                 p1Ready = documentP1["p1Ready"].AsBoolean;
                 p2Ready = documentP2["p2Ready"].AsBoolean;
             }
-            catch {
-                timer_Pull.Stop();
-                Start_Game();
+            catch
+            {
+                
+            }
+            finally
+            {
+                MessageBox.Show(p1Ready.ToString() + "p2:" + p2Ready.ToString());
+                if (p1Ready && p2Ready)
+                {
+                    MessageBox.Show("yeah");
+                    timer_Pull.Stop();
+                    Start_Game();
+                }
             }
         }
 
@@ -309,7 +320,6 @@ namespace battleship
 
         private void Push_ReadyP(string field)
         {
-            int temp;
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
