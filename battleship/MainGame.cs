@@ -105,7 +105,6 @@ namespace battleship
 
             if (p1 == "false" && p2 == "false") //if both players have been chosen start the game
             {
-                MessageBox.Show("douleuei");
                 populateGrid(2, panel1, grid1, btnGrid1);
                 pictureBoxPlayer1.Hide();
                 pictureBoxPlayer2.Hide();
