@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainGame));
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBoxPlayer2 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxPlayer1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxShip5 = new System.Windows.Forms.PictureBox();
             this.pictureBoxShip3 = new System.Windows.Forms.PictureBox();
             this.pictureBoxShip4 = new System.Windows.Forms.PictureBox();
@@ -40,16 +42,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.pictureBoxPlayer2 = new System.Windows.Forms.PictureBox();
-            this.pictureBoxPlayer1 = new System.Windows.Forms.PictureBox();
             this.timer_Pull = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -57,7 +57,7 @@
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.Location = new System.Drawing.Point(789, 84);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(354, 87);
             this.button1.TabIndex = 3;
@@ -75,16 +75,48 @@
             this.panel1.Controls.Add(this.pictureBoxShip4);
             this.panel1.Controls.Add(this.pictureBoxShip2);
             this.panel1.Location = new System.Drawing.Point(43, 284);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1467, 677);
             this.panel1.TabIndex = 0;
+            // 
+            // pictureBoxPlayer2
+            // 
+            this.pictureBoxPlayer2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBoxPlayer2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer2.Image")));
+            this.pictureBoxPlayer2.Location = new System.Drawing.Point(909, 4);
+            this.pictureBoxPlayer2.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBoxPlayer2.Name = "pictureBoxPlayer2";
+            this.pictureBoxPlayer2.Size = new System.Drawing.Size(533, 673);
+            this.pictureBoxPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPlayer2.TabIndex = 7;
+            this.pictureBoxPlayer2.TabStop = false;
+            this.pictureBoxPlayer2.Click += new System.EventHandler(this.pictureBoxPlayer2_Click);
+            this.pictureBoxPlayer2.MouseEnter += new System.EventHandler(this.pictureBoxPlayer2_MouseEnter);
+            this.pictureBoxPlayer2.MouseLeave += new System.EventHandler(this.pictureBoxPlayer2_MouseLeave);
+            // 
+            // pictureBoxPlayer1
+            // 
+            this.pictureBoxPlayer1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxPlayer1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBoxPlayer1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer1.Image")));
+            this.pictureBoxPlayer1.Location = new System.Drawing.Point(4, 5);
+            this.pictureBoxPlayer1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBoxPlayer1.Name = "pictureBoxPlayer1";
+            this.pictureBoxPlayer1.Size = new System.Drawing.Size(504, 652);
+            this.pictureBoxPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBoxPlayer1.TabIndex = 8;
+            this.pictureBoxPlayer1.TabStop = false;
+            this.pictureBoxPlayer1.Click += new System.EventHandler(this.pictureBoxPlayer1_Click);
+            this.pictureBoxPlayer1.MouseEnter += new System.EventHandler(this.pictureBoxPlayer1_MouseEnter);
+            this.pictureBoxPlayer1.MouseLeave += new System.EventHandler(this.pictureBoxPlayer1_MouseLeave);
             // 
             // pictureBoxShip5
             // 
             this.pictureBoxShip5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip5.Image")));
             this.pictureBoxShip5.Location = new System.Drawing.Point(1143, 127);
-            this.pictureBoxShip5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxShip5.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxShip5.Name = "pictureBoxShip5";
             this.pictureBoxShip5.Size = new System.Drawing.Size(320, 37);
             this.pictureBoxShip5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -99,7 +131,7 @@
             this.pictureBoxShip3.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip3.Image")));
             this.pictureBoxShip3.Location = new System.Drawing.Point(1328, 263);
-            this.pictureBoxShip3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxShip3.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxShip3.Name = "pictureBoxShip3";
             this.pictureBoxShip3.Size = new System.Drawing.Size(135, 31);
             this.pictureBoxShip3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -114,7 +146,7 @@
             this.pictureBoxShip4.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip4.Image")));
             this.pictureBoxShip4.Location = new System.Drawing.Point(1263, 187);
-            this.pictureBoxShip4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxShip4.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxShip4.Name = "pictureBoxShip4";
             this.pictureBoxShip4.Size = new System.Drawing.Size(200, 40);
             this.pictureBoxShip4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -129,7 +161,7 @@
             this.pictureBoxShip2.BackColor = System.Drawing.Color.DarkGray;
             this.pictureBoxShip2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxShip2.Image")));
             this.pictureBoxShip2.Location = new System.Drawing.Point(1382, 336);
-            this.pictureBoxShip2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBoxShip2.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBoxShip2.Name = "pictureBoxShip2";
             this.pictureBoxShip2.Size = new System.Drawing.Size(81, 27);
             this.pictureBoxShip2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -143,7 +175,7 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.Transparent;
             this.panel2.Location = new System.Drawing.Point(1008, 284);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(733, 677);
             this.panel2.TabIndex = 1;
@@ -164,7 +196,7 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(109, 81);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(203, 39);
             this.textBox1.TabIndex = 5;
@@ -175,42 +207,10 @@
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(1465, 103);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(203, 39);
             this.textBox2.TabIndex = 6;
-            // 
-            // pictureBoxPlayer2
-            // 
-            this.pictureBoxPlayer2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxPlayer2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxPlayer2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer2.Image")));
-            this.pictureBoxPlayer2.Location = new System.Drawing.Point(909, 4);
-            this.pictureBoxPlayer2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBoxPlayer2.Name = "pictureBoxPlayer2";
-            this.pictureBoxPlayer2.Size = new System.Drawing.Size(533, 673);
-            this.pictureBoxPlayer2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPlayer2.TabIndex = 7;
-            this.pictureBoxPlayer2.TabStop = false;
-            this.pictureBoxPlayer2.Click += new System.EventHandler(this.pictureBoxPlayer2_Click);
-            this.pictureBoxPlayer2.MouseEnter += new System.EventHandler(this.pictureBoxPlayer2_MouseEnter);
-            this.pictureBoxPlayer2.MouseLeave += new System.EventHandler(this.pictureBoxPlayer2_MouseLeave);
-            // 
-            // pictureBoxPlayer1
-            // 
-            this.pictureBoxPlayer1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxPlayer1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxPlayer1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxPlayer1.Image")));
-            this.pictureBoxPlayer1.Location = new System.Drawing.Point(4, 5);
-            this.pictureBoxPlayer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBoxPlayer1.Name = "pictureBoxPlayer1";
-            this.pictureBoxPlayer1.Size = new System.Drawing.Size(504, 652);
-            this.pictureBoxPlayer1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBoxPlayer1.TabIndex = 8;
-            this.pictureBoxPlayer1.TabStop = false;
-            this.pictureBoxPlayer1.Click += new System.EventHandler(this.pictureBoxPlayer1_Click);
-            this.pictureBoxPlayer1.MouseEnter += new System.EventHandler(this.pictureBoxPlayer1_MouseEnter);
-            this.pictureBoxPlayer1.MouseLeave += new System.EventHandler(this.pictureBoxPlayer1_MouseLeave);
             // 
             // timer_Pull
             // 
@@ -233,7 +233,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "battleship";
@@ -241,12 +241,12 @@
             this.Load += new System.EventHandler(this.MainGame_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
