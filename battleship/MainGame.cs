@@ -15,6 +15,7 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
+        bool secondStage = false;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
         bool PictureBoxPlayer2 = true;
@@ -144,6 +145,12 @@ namespace battleship
                 pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
             if (!PictureBoxPlayer2)
                 pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+
+            if (secondStage)
+            {
+                Pull_ReadyP();
+            }
+
         }
 
         private void Push_Player_Choice(string p)
@@ -244,18 +251,12 @@ namespace battleship
         /* check if each ship placed correctly (number of cells occupying) */
         private bool Check_Positioning(PictureBox pictureBox, int multitude, string name)
         {
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("p1Ready", false);
-            var document = collection.Find(filter).FirstOrDefault();
-            var p1Ready = document["p1Ready"].AsBoolean;
-            var p2Ready = document["p2Ready"].AsBoolean;
-            if ((Check_DragDrop(pictureBox) != multitude) || p1Ready != null || p2Ready != null)
+            if ((Check_DragDrop(pictureBox) != multitude))
             {
                 MessageBox.Show("wrong positioning on ship " + name);
                 return false;
             }
-            else if ((Check_DragDrop(pictureBox) == multitude) && p1Ready == null && p2Ready == null)
+            else
             {
                 grid1.ClearGrid();
                 Check_DragDrop(pictureBoxShip5);
@@ -264,29 +265,47 @@ namespace battleship
                 Check_DragDrop(pictureBoxShip2);
                 return true;
             }
-            else
-                return false;
+        }
+
+        private void Pull_ReadyP()
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", !false);
+            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", !false);
+            var documentP1 = collection.Find(filterP1).FirstOrDefault();
+            var documentP2 = collection.Find(filterP2).FirstOrDefault();
+            var p1Ready = documentP1["p1Ready"].AsBoolean;
+            var p2Ready = documentP2["p2Ready"].AsBoolean;
+            if (p1Ready && p2Ready)
+            { 
+                timer_Pull.Stop();
+                Start_Game();
+            }
         }
 
         private void P1()
-        {
-            PushReadyP("p1Ready");
-            StartGame();
+        {            
+            secondStage = true;
+            timer_Pull.Start();
+            Check_Ships("p1Ready");                                    
         }
 
         private void P2()
-        {
-            PushReadyP("p2Ready");
-            StartGame();
+        {            
+            secondStage = true;
+            timer_Pull.Start();
+            Check_Ships("p2Ready");
         }
 
         private void P(string field)
-        {
-            PushReadyP(field);
-            StartGame();
+        {            
+            secondStage = true;
+            timer_Pull.Start();
+            Check_Ships(field);
         }
 
-        private void PushReadyP(string field)
+        private void Push_ReadyP(string field)
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
@@ -295,25 +314,34 @@ namespace battleship
             collection.UpdateOne(filter, updatePReady);
         }
 
+        private void Check_Ships(string field)
+        {
+            if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
+        Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
+        Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
+        Check_Positioning(pictureBoxShip2, 2, "submarine")))
+            { }
+            else
+            {
+                Push_ReadyP(field);
+            }
+        }
+
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (!PictureBoxPlayer1)
+            {
                 P1();
-            else
-                P2();
-
-        }
-
-        private void StartGame()
-        {
-            if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
-                    Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
-                    Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
-                    Check_Positioning(pictureBoxShip2, 2, "submarine")))
-            { }
+            }                
             else
             {
+                P2();
+            }
+        }
+
+        private void Start_Game()
+        {
                 exist = true;
                 stopDragDrop = false;
                 /*foreach (var ocp in grid1.theGrid)
@@ -331,7 +359,8 @@ namespace battleship
                 pictureBoxSea.SizeMode = PictureBoxSizeMode.StretchImage;
                 pictureBoxSea.BringToFront();
                 Controls.Add(pictureBoxSea);*/
-            }
+
+            
         }
 
             void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
