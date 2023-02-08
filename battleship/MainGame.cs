@@ -57,15 +57,15 @@ namespace battleship
         {
             dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
             Initialize_Database();
-          //  populateGrid(2, panel1, grid1, btnGrid1);
-            pictureBoxShip5.AllowDrop = true;            
+            //  populateGrid(2, panel1, grid1, btnGrid1);
+            pictureBoxShip5.AllowDrop = true;
             pictureBoxShip2.Hide();
             pictureBoxShip3.Hide();
             pictureBoxShip4.Hide();
             pictureBoxShip5.Hide();
-            buttonStart.Hide();       
+            buttonStart.Hide();
         }
-        
+
         private void Wait()
         {
             //while (wait) ;
@@ -105,9 +105,9 @@ namespace battleship
             /* to kanoume epidh den jeroume pws na paroume to value twn p1, p2 kateyueian */
             string[] words = document.ToString().Split(',');
             string[] tempP = words[4].Split(':');
-            string p1 = tempP[1].Substring(1, tempP[1].Length-1);
+            string p1 = tempP[1].Substring(1, tempP[1].Length - 1);
             tempP = words[5].Split(':');
-            string p2 = tempP[1].Substring(1, tempP[1].Length-1);
+            string p2 = tempP[1].Substring(1, tempP[1].Length - 1);
 
             if (p1 == "false" && p2 == "false") //if both players have been chosen start the game
             {
@@ -179,9 +179,9 @@ namespace battleship
                     btnGrid[i, j].UseVisualStyleBackColor = true;
                     //btnGrid[i, j].FlatAppearance.MouseOverBackColor = Color.FromArgb(100, Color.Black);
 
-                   btnGrid[i, j].Text = i + "|" + j;
+                    btnGrid[i, j].Text = i + "|" + j;
 
-                  //  btnGrid[i, j].Hide();
+                    //  btnGrid[i, j].Hide();
                 }
             }
 
@@ -212,7 +212,7 @@ namespace battleship
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
             var updateX = Builders<BsonDocument>.Update.Set("x", Int32.Parse(clicked.Text.Substring(0, 1)));
-            var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length-1)));
+            var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length - 1)));
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
             Wait();
@@ -270,29 +270,47 @@ namespace battleship
 
         private void P1()
         {
-
+            PushReadyP("p1Ready");
+            StartGame();
         }
 
         private void P2()
         {
-            
+            PushReadyP("p2Ready");
+            StartGame();
+        }
+
+        private void P(string field)
+        {
+            PushReadyP(field);
+            StartGame();
+        }
+
+        private void PushReadyP(string field)
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updatePReady = Builders<BsonDocument>.Update.Set(field, true);
+            collection.UpdateOne(filter, updatePReady);
         }
 
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            int temp;
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updateP1Ready = Builders<BsonDocument>.Update.Set("p1Ready", true);
-            var updateP2Ready = Builders<BsonDocument>.Update.Set("p2Ready", true);
-            collection.UpdateOne(filter, updateP1Ready);
-            collection.UpdateOne(filter, updateP2Ready);
+            if (!PictureBoxPlayer1)
+                P1();
+            else
+                P2();
+
+        }
+
+        private void StartGame()
+        {
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
-            Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
-            Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
-            Check_Positioning(pictureBoxShip2, 2, "submarine")))
+                    Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
+                    Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
+                    Check_Positioning(pictureBoxShip2, 2, "submarine")))
             { }
             else
             {
@@ -316,175 +334,175 @@ namespace battleship
             }
         }
 
-        void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
-        {
-            if (e.Button == MouseButtons.Left)
+            void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
             {
-                offset = e.Location;
-                mousePosition = e.Location;
-                pictureBox.Cursor = Cursors.Hand;
-                pictureBox.Focus();
-            }
-        }
-
-        /* mousePosition added so the picturebox will update its location on a thrshold of 5 so it does not glitch */
-        void Transition_Glitch(MouseEventArgs e, PictureBox pictureBox)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (Math.Abs(e.X - mousePosition.X) > 5 || Math.Abs(e.Y - mousePosition.Y) > 5)
+                if (e.Button == MouseButtons.Left)
                 {
-                    pictureBox.Left = e.X + pictureBox.Left - offset.X;
-                    pictureBox.Top = e.Y + pictureBox.Top - offset.Y;
+                    offset = e.Location;
                     mousePosition = e.Location;
+                    pictureBox.Cursor = Cursors.Hand;
                     pictureBox.Focus();
                 }
             }
-        }
 
-        /* rotates 90 degrees vertically the picturebox */
-        void Rotate(int counter, PictureBox pictureBox)
-        {
-            counter++;
-            Image image = pictureBox.Image;
-            image.RotateFlip(RotateFlipType.Rotate90FlipXY);
-            pictureBox.Image = image;
-            if ((counter % 2) == 0)
+            /* mousePosition added so the picturebox will update its location on a thrshold of 5 so it does not glitch */
+            void Transition_Glitch(MouseEventArgs e, PictureBox pictureBox)
             {
-                pictureBox.Width = pictureBox.Image.Width;
-                pictureBox.Height = pictureBox.Image.Height;
+                if (e.Button == MouseButtons.Left)
+                {
+                    if (Math.Abs(e.X - mousePosition.X) > 5 || Math.Abs(e.Y - mousePosition.Y) > 5)
+                    {
+                        pictureBox.Left = e.X + pictureBox.Left - offset.X;
+                        pictureBox.Top = e.Y + pictureBox.Top - offset.Y;
+                        mousePosition = e.Location;
+                        pictureBox.Focus();
+                    }
+                }
             }
-            else
+
+            /* rotates 90 degrees vertically the picturebox */
+            void Rotate(int counter, PictureBox pictureBox)
             {
-                pictureBox.Width = pictureBox.Image.Width;
-                pictureBox.Height = pictureBox.Image.Height;
+                counter++;
+                Image image = pictureBox.Image;
+                image.RotateFlip(RotateFlipType.Rotate90FlipXY);
+                pictureBox.Image = image;
+                if ((counter % 2) == 0)
+                {
+                    pictureBox.Width = pictureBox.Image.Width;
+                    pictureBox.Height = pictureBox.Image.Height;
+                }
+                else
+                {
+                    pictureBox.Width = pictureBox.Image.Width;
+                    pictureBox.Height = pictureBox.Image.Height;
+                }
+            }
+
+            /* movement & rotation for each piscturebox start */
+            private void pictureBoxShip5_MouseDown(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Location_Offset(e, pictureBoxShip5);
+            }
+
+            private void pictureBoxShip5_MouseMove(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Transition_Glitch(e, pictureBoxShip5);
+            }
+
+            private void pictureBoxShip5_MouseDoubleClick(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Rotate(counter1, pictureBoxShip5);
+            }
+
+            private void pictureBoxShip4_MouseDown(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Location_Offset(e, pictureBoxShip4);
+            }
+
+            private void pictureBoxShip4_MouseMove(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Transition_Glitch(e, pictureBoxShip4);
+            }
+
+            private void pictureBoxShip4_MouseDoubleClick(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Rotate(counter2, pictureBoxShip4);
+            }
+
+            private void pictureBoxShip3_MouseDown(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Location_Offset(e, pictureBoxShip3);
+            }
+
+            private void pictureBoxShip3_MouseMove(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Transition_Glitch(e, pictureBoxShip3);
+            }
+
+            private void pictureBoxShip3_MouseDoubleClick(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Rotate(counter3, pictureBoxShip3);
+            }
+
+            private void pictureBoxShip2_MouseDown(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Location_Offset(e, pictureBoxShip2);
+            }
+
+
+            private void pictureBoxShip2_MouseMove(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Transition_Glitch(e, pictureBoxShip2);
+            }
+
+
+            private void pictureBoxShip2_MouseDoubleClick(object sender, MouseEventArgs e)
+            {
+                if (stopDragDrop)
+                    Rotate(counter4, pictureBoxShip2);
+            }
+
+            /* movement & rotation for each piscturebox end */
+
+            private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
+            {
+                if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
+                    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+            }
+
+            private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
+            {
+
+                if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
+                    pictureBoxPlayer1.ImageLocation = "Captain1.png";
+                // else
+                //    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+            }
+
+            private void pictureBoxPlayer1_Click(object sender, EventArgs e)
+            {
+                if (PictureBoxPlayer1 && allowClick) {
+                    Push_Player_Choice("p1");
+                    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+                    PictureBoxPlayer1 = false;
+                    allowClick = false;
+                }
+            }
+
+            private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
+            {
+                if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+                    pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+            }
+
+            private void pictureBoxPlayer2_MouseLeave(object sender, EventArgs e)
+            {
+                if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+                    pictureBoxPlayer2.ImageLocation = "Captain2.png";
+                //   else
+                //     pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+            }
+
+            private void pictureBoxPlayer2_Click(object sender, EventArgs e)
+            {
+                if (PictureBoxPlayer2 && allowClick) {
+                    Push_Player_Choice("p2");
+                    pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+                    PictureBoxPlayer2 = false;
+                    allowClick = false;
+                }
             }
         }
-
-        /* movement & rotation for each piscturebox start */
-        private void pictureBoxShip5_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Location_Offset(e, pictureBoxShip5);
-        }
-
-        private void pictureBoxShip5_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Transition_Glitch(e, pictureBoxShip5);
-        }
-
-        private void pictureBoxShip5_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Rotate(counter1, pictureBoxShip5);
-        }
-
-        private void pictureBoxShip4_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Location_Offset(e,pictureBoxShip4);
-        }
-
-        private void pictureBoxShip4_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Transition_Glitch(e,pictureBoxShip4);
-        }
-
-        private void pictureBoxShip4_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Rotate(counter2, pictureBoxShip4);
-        }
-
-        private void pictureBoxShip3_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Location_Offset(e, pictureBoxShip3);
-        }
-
-        private void pictureBoxShip3_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Transition_Glitch(e, pictureBoxShip3);
-        }
-
-        private void pictureBoxShip3_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Rotate(counter3, pictureBoxShip3);
-        }
-
-        private void pictureBoxShip2_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Location_Offset(e,pictureBoxShip2);
-        }
-
-
-        private void pictureBoxShip2_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Transition_Glitch(e,pictureBoxShip2);
-        }
-
-
-        private void pictureBoxShip2_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (stopDragDrop)
-                Rotate(counter4, pictureBoxShip2);
-        }
-
-        /* movement & rotation for each piscturebox end */
-
-        private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
-        {
-            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
-                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-        }
-
-        private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
-        {
-
-            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
-                pictureBoxPlayer1.ImageLocation = "Captain1.png";
-           // else
-            //    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-        }
-
-        private void pictureBoxPlayer1_Click(object sender, EventArgs e)
-        {
-            if (PictureBoxPlayer1 && allowClick) { 
-                Push_Player_Choice("p1");
-                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-                PictureBoxPlayer1 = false;
-                allowClick = false;
-            }
-        }
-
-        private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
-        {
-            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
-                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-        }
-
-        private void pictureBoxPlayer2_MouseLeave(object sender, EventArgs e)
-        {
-            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
-                pictureBoxPlayer2.ImageLocation = "Captain2.png";
-         //   else
-           //     pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-        }
-
-        private void pictureBoxPlayer2_Click(object sender, EventArgs e)
-        {
-            if (PictureBoxPlayer2 && allowClick ){
-                Push_Player_Choice("p2");
-                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-                PictureBoxPlayer2 = false;
-                allowClick = false;
-            }
-        }
-    }
-}
+    } 
