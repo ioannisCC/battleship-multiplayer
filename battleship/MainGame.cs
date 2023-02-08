@@ -275,10 +275,12 @@ namespace battleship
             var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", false);
             var documentP1 = collection.Find(filterP1).FirstOrDefault();
             var documentP2 = collection.Find(filterP2).FirstOrDefault();
-            var p1Ready = documentP1["p1Ready"].AsBoolean;
-            var p2Ready = documentP2["p2Ready"].AsBoolean;
-            if (p1Ready && p2Ready)
-            { 
+            var (p1Ready, p2Ready) = (false, false);
+            try {
+                p1Ready = documentP1["p1Ready"].AsBoolean;
+                p2Ready = documentP2["p2Ready"].AsBoolean;
+            }
+            catch {
                 timer_Pull.Stop();
                 Start_Game();
             }
