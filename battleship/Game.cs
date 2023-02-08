@@ -184,11 +184,11 @@ namespace battleship
         {
             initialPercentage += loadingSpeed;
             float percentage = initialPercentage / pictureBox4.Height * 100;
-            label6.Text = (int)percentage + "%";
+            labelLoadingText.Text = (int)percentage + "%";
             panel2.Location = new Point(panel2.Location.X, panel2.Location.Y + loadingSpeed);
             if (panel2.Location.Y > pictureBox4.Location.Y + pictureBox4.Height)
             {
-                label6.Text = "100 %";
+                labelLoadingText.Text = "100 %";
                 groupBox1.Hide();
                 this.timer1.Stop();
                 this.timer2.Stop();

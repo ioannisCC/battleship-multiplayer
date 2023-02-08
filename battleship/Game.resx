@@ -127,7 +127,7 @@
   <data name="pictureBox3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAh4AAAFGCAYAAAAl9pZNAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAylSURBVHhe7dzBip5HeoZhH5dX
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAylSURBVHhe7dzBip5HeoZhH5dX
         ySKZQ5kjmVMIgZAhDAkTH4fptrCwsWWjPgxhEdGxJbfm02aYxaNa/FX1Um9z3XBR8C5/LL4HCfzFx48f
         AQBKxCMAwA7xCACwQzwCAOwQjwAAO8QjAMAO8QgAsEM8AgDsEI8AADvEIwDADvEIALBDPAIA7BCPAAA7
         xCMAwA7xCACwQzwCAOwQjwAAO8QjAMAO8QgAsEM8AgDsEI/AWd6+ffvuevWZ7u7u/vl64m8HnCUegbO8
@@ -187,7 +187,7 @@
   <data name="pictureBox3.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAh4AAAFGCAYAAAAl9pZNAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAylSURBVHhe7dzBip5HeoZhH5dX
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAylSURBVHhe7dzBip5HeoZhH5dX
         ySKZQ5kjmVMIgZAhDAkTH4fptrCwsWWjPgxhEdGxJbfm02aYxaNa/FX1Um9z3XBR8C5/LL4HCfzFx48f
         AQBKxCMAwA7xCACwQzwCAOwQjwAAO8QjAMAO8QgAsEM8AgDsEI8AADvEIwDADvEIALBDPAIA7BCPAAA7
         xCMAwA7xCACwQzwCAOwQjwAAO8QjAMAO8QgAsEM8AgDsEI/AWd6+ffvuevWZ7u7u/vl64m8HnCUegbO8
@@ -5283,7 +5283,7 @@
   <data name="logo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABOkAAANUCAYAAADmUnlXAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAAEnMAABJzAYwiuQcAAP+WSURBVHhe7N13eBTXufjxESa2
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAAEnEAABJxAfPceo4AAP+WSURBVHhe7N13eBTXufjxESa2
         48ROHDu5uTe5Pbfk/pJbHGxjqkAgoYpEU++999577wUh0XsXvdtgMAZXbGNjeke997Z7fu97Vmc1OxoJ
         BBhbzvnj88zs7Ozs7OyKx/4+Z2YEQgjHcRw3gX1d1y9crO0bMjBEoVJDVNhj8HWdcoSLOK2HbQ35pkHT
         t40ql5uUGq6Ca80EpoPUtWaV6y0K6karkrreTqgbHSq3YB7dbFfIutWm6UbbIMWev92upNjzd9qUKu2D
