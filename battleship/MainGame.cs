@@ -15,6 +15,9 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
+        bool allowClick = true;
+        bool PictureBoxPlayer1 = true; //true means available 
+        bool PictureBoxPlayer2 = true;
         static Grid grid1 = new Grid(10);
         static Grid grid2 = new Grid(10);
         public Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
@@ -98,24 +101,36 @@ namespace battleship
             string[] tempP = words[4].Split(':');
             string p1 = tempP[1].Substring(1, tempP[1].Length-1);
             tempP = words[5].Split(':');
-            string p2 = tempP[1].Substring(1, tempP[1].Length-3);
+            string p2 = tempP[1].Substring(1, tempP[1].Length-1);
 
-            if (p1 == "false")
+            if (p1 == "false" && p2 == "false") //if both players have been chosen start the game
             {
+                MessageBox.Show("douleuei");
+                populateGrid(2, panel1, grid1, btnGrid1);
                 pictureBoxPlayer1.Hide();
+                pictureBoxPlayer2.Hide();
+                timer_Pull.Stop();
+            }
+            else if (p1 == "false")
+            {
+                // pictureBoxPlayer1.Hide();
                 pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
                 textBox2.Hide();
                 textBox2.Controls.Remove(textBox1);
+                pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
+                PictureBoxPlayer1 = false;
             }
             else if (p2 == "false")
             {
-                pictureBoxPlayer2.Hide();
+                //pictureBoxPlayer2.Hide();
                 pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
                 textBox1.Hide();
                 textBox1.Controls.Remove(textBox2);
+                pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
+                PictureBoxPlayer2 = false;
             }
 
-            if (p1 == "false" && p2 == "false") timer_Pull.Stop();
+            
         }
 
         private void timer_Pull_Tick(object sender, EventArgs e)
@@ -156,7 +171,7 @@ namespace battleship
                     btnGrid[i, j].UseVisualStyleBackColor = true;
                     //btnGrid[i, j].FlatAppearance.MouseOverBackColor = Color.FromArgb(100, Color.Black);
 
-                 //   btnGrid[i, j].Text = i + "|" + j;
+                   btnGrid[i, j].Text = i + "|" + j;
 
                   //  btnGrid[i, j].Hide();
                 }
@@ -390,36 +405,50 @@ namespace battleship
 
         private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
         {
-            pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
+                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
         }
 
         private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
         {
-            pictureBoxPlayer1.ImageLocation = "Captain1.png";
+
+            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
+                pictureBoxPlayer1.ImageLocation = "Captain1.png";
+            else
+                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
         }
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
-            Push_Player_Choice("p1");
-            pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-            populateGrid(2, panel1, grid1, btnGrid1);
-
+            if (PictureBoxPlayer1 && allowClick) { 
+                Push_Player_Choice("p1");
+                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+                PictureBoxPlayer1 = false;
+                allowClick = false;
+            }
         }
 
         private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
         {
-            pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
         }
 
         private void pictureBoxPlayer2_MouseLeave(object sender, EventArgs e)
         {
-            pictureBoxPlayer2.ImageLocation = "Captain2.png";
+            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+                pictureBoxPlayer2.ImageLocation = "Captain2.png";
+            else
+                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
         {
-            Push_Player_Choice("p2");
-            pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-            populateGrid(2, panel1, grid1, btnGrid1);
+            if (PictureBoxPlayer2 && allowClick ){
+                Push_Player_Choice("p2");
+                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+                PictureBoxPlayer2 = false;
+                allowClick = false;
+            }
         }
     }
 }
