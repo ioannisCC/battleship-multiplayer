@@ -188,7 +188,7 @@ namespace battleship
             panel2.Location = new Point(panel2.Location.X, panel2.Location.Y + loadingSpeed);
             if (panel2.Location.Y > pictureBox4.Location.Y + pictureBox4.Height)
             {
-                labelLoadingText.Text = "100 %";
+                labelLoadingText.Text = "100%";
                 groupBox1.Hide();
                 this.timer1.Stop();
                 this.timer2.Stop();
