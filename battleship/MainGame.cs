@@ -246,16 +246,16 @@ namespace battleship
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("p1Ready", true);
+            var filter = Builders<BsonDocument>.Filter.Eq("p1Ready", false);
             var document = collection.Find(filter).FirstOrDefault();
-            var desired = document["p1Ready"].AsBoolean;
-            MessageBox.Show(desired.ToString());
-            if (Check_DragDrop(pictureBox) != multitude)
+            var p1Ready = document["p1Ready"].AsBoolean;
+            var p2Ready = document["p2Ready"].AsBoolean;
+            if ((Check_DragDrop(pictureBox) != multitude) || p1Ready != null || p2Ready != null)
             {
                 MessageBox.Show("wrong positioning on ship " + name);
                 return false;
             }
-            else
+            else if ((Check_DragDrop(pictureBox) == multitude) && p1Ready == null && p2Ready == null)
             {
                 grid1.ClearGrid();
                 Check_DragDrop(pictureBoxShip5);
@@ -264,11 +264,31 @@ namespace battleship
                 Check_DragDrop(pictureBoxShip2);
                 return true;
             }
+            else
+                return false;
+        }
+
+        private void P1()
+        {
+
+        }
+
+        private void P2()
+        {
+            
         }
 
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
+            int temp;
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateP1Ready = Builders<BsonDocument>.Update.Set("p1Ready", true);
+            var updateP2Ready = Builders<BsonDocument>.Update.Set("p2Ready", true);
+            collection.UpdateOne(filter, updateP1Ready);
+            collection.UpdateOne(filter, updateP2Ready);
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
             Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
             Check_Positioning(pictureBoxShip3, 3, "minesweeper") &&
