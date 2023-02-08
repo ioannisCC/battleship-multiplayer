@@ -302,11 +302,12 @@ namespace battleship
         {            
             secondStage = true;
             timer_Pull.Start();
-            Check_Ships(field);
+            Check_Ships(field); //dfhvbiofdh;godhgd
         }
 
         private void Push_ReadyP(string field)
         {
+            int temp;
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
