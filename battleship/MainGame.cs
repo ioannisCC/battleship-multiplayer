@@ -415,11 +415,6 @@ namespace battleship
             
         }
 
-        private void Dummy()
-        {
-            int temp = 0;
-        }
-
             void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
             {
                 if (e.Button == MouseButtons.Left)
@@ -428,7 +423,6 @@ namespace battleship
                     mousePosition = e.Location;
                     pictureBox.Cursor = Cursors.Hand;
                     pictureBox.Focus();
-                Dummy();
                 }
             }
 
