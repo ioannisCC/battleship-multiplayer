@@ -124,7 +124,7 @@ namespace battleship
                 // pictureBoxPlayer1.Hide();
                 pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
                 textBox2.Hide();
-                textBox2.Controls.Remove(textBox1);
+                textBox2.Controls.Remove(textBoxName);
                 pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
                 PictureBoxPlayer1 = false;
             }
@@ -132,8 +132,8 @@ namespace battleship
             {
                 //pictureBoxPlayer2.Hide();
                 pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
-                textBox1.Hide();
-                textBox1.Controls.Remove(textBox2);
+                textBoxName.Hide();
+                textBoxName.Controls.Remove(textBox2);
                 pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
                 PictureBoxPlayer2 = false;
             }
@@ -298,36 +298,73 @@ namespace battleship
         }
 
         private void P1()
-        {            
-            stage = 2;
-            timer_Pull.Start();
-            Check_Ships("p1Ready");                                    
+        {   if (!string.IsNullOrEmpty(textBoxName.Text))
+            {
+                stage = 2;
+                timer_Pull.Start();
+                Check_Ships("p1Ready", "p1Name",textBoxName.Text);
+            }
+            else
+            {
+                MessageBox.Show("you have not entered your name");
+            }
         }
 
         private void P2()
-        {            
-            stage = 2;
-            timer_Pull.Start();
-            Check_Ships("p2Ready");
+        {   if (!string.IsNullOrEmpty(textBoxName.Text))
+            {
+                stage = 2;
+                timer_Pull.Start();
+                Check_Ships("p2Ready", "p2Name",textBoxName.Text);
+            }
+            else
+            {
+                MessageBox.Show("you have not entered your name");
+            }
         }
 
-        private void P(string field)
-        {            
-            stage = 2;
-            timer_Pull.Start();
-            Check_Ships(field);
+        private void P(string fieldReady,string fieldName)
+        {
+            if (fieldReady == "p1Ready")
+            {
+                if (!string.IsNullOrEmpty(textBoxName.Text))
+                {
+                    stage = 2;
+                    timer_Pull.Start();
+                    Check_Ships(fieldReady, fieldName, textBoxName.Text);
+                }
+                else
+                {
+                    MessageBox.Show("you have not entered your name");
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(textBoxName.Text))
+                {
+                    stage = 2;
+                    timer_Pull.Start();
+                    Check_Ships(fieldReady, fieldName, textBoxName.Text);
+                }
+                else
+                {
+                    MessageBox.Show("you have not entered your name");
+                }
+            }
         }
 
-        private void Push_ReadyP(string field)
+        private void Push_ReadyP(string fieldReady, string fieldName, string name)
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updatePReady = Builders<BsonDocument>.Update.Set(field, true);
+            var updatePReady = Builders<BsonDocument>.Update.Set(fieldReady, true);            
+            var updateP1Name = Builders<BsonDocument>.Update.Set(fieldName, name);
             collection.UpdateOne(filter, updatePReady);
+            collection.UpdateOne(filter, updateP1Name);            
         }
 
-        private void Check_Ships(string field)
+        private void Check_Ships(string fieldReady, string fieldName, string name)
         {
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
         Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
@@ -336,7 +373,7 @@ namespace battleship
             { }
             else
             {
-                Push_ReadyP(field);
+                Push_ReadyP(fieldReady, fieldName, name);
             }
         }
 
