@@ -71,7 +71,7 @@ namespace battleship
 
         private void Wait()
         {
-            //while (wait) ;
+            while (wait) ;
         }
 
         private void Initialize_Database()
@@ -224,6 +224,7 @@ namespace battleship
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
             Wait();
+            stage++;
         }
 
         private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
@@ -357,24 +358,18 @@ namespace battleship
             exist = true;
             stopDragDrop = false;
             buttonStart.Hide();
-            buttonStart.Controls.Remove(buttonStart);
-            //buttonStart.Enabled = false;
-            /*foreach (var ocp in grid1.theGrid)
-            {
-                if (ocp.CurrentlyOccupied)
-                    //MessageBox.Show(ocp.ToString());
-            }*/
             panel1.Width = panel1.Width / 2;
             populateGrid(1, panel2, grid2, btnGrid2);
             //depopulateGrid(grid1, btnGrid1);
-            /*PictureBox pictureBoxSea = new PictureBox();
-            pictureBoxSea.Size = panel1.Size;
-            pictureBoxSea.Location = panel1.Location;
-            pictureBoxSea.ImageLocation = "istockphoto-1385726058-612x612.jpg";
-            pictureBoxSea.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBoxSea.BringToFront();
-             Controls.Add(pictureBoxSea);*/
+            if (player == 2 && stage == 3)
+            {
+                Wait();
+            }
+            else
+            {
 
+            }
+            int temp;
             
         }
 
