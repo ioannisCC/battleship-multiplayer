@@ -123,8 +123,6 @@ namespace battleship
             {
                 // pictureBoxPlayer1.Hide();
                 pictureBoxPlayer1.Controls.Remove(pictureBoxPlayer1);
-                textBox2.Hide();
-                textBox2.Controls.Remove(textBoxName);
                 pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
                 PictureBoxPlayer1 = false;
             }
@@ -132,8 +130,6 @@ namespace battleship
             {
                 //pictureBoxPlayer2.Hide();
                 pictureBoxPlayer2.Controls.Remove(pictureBoxPlayer2);
-                textBoxName.Hide();
-                textBoxName.Controls.Remove(textBox2);
                 pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
                 PictureBoxPlayer2 = false;
             }
@@ -393,6 +389,8 @@ namespace battleship
         private void Start_Game()
         {
             stage = 3;
+            textBoxName.Hide();
+            labelNameChoice.Hide();
             exist = true;
             stopDragDrop = false;
             buttonStart.Hide();

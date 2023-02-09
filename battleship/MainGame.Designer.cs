@@ -42,7 +42,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.timer_Pull = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelNameChoice = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
@@ -196,17 +196,17 @@
             this.timer_Pull.Interval = 1000;
             this.timer_Pull.Tick += new System.EventHandler(this.timer_Pull_Tick);
             // 
-            // label2
+            // labelNameChoice
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(345, 111);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(708, 42);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "enter your name and choose your captain";
+            this.labelNameChoice.AutoSize = true;
+            this.labelNameChoice.BackColor = System.Drawing.Color.Transparent;
+            this.labelNameChoice.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelNameChoice.ForeColor = System.Drawing.Color.White;
+            this.labelNameChoice.Location = new System.Drawing.Point(345, 111);
+            this.labelNameChoice.Name = "labelNameChoice";
+            this.labelNameChoice.Size = new System.Drawing.Size(708, 42);
+            this.labelNameChoice.TabIndex = 6;
+            this.labelNameChoice.Text = "enter your name and choose your captain";
             // 
             // MainGame
             // 
@@ -216,7 +216,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelNameChoice);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
@@ -254,6 +254,6 @@
         private System.Windows.Forms.PictureBox pictureBoxPlayer2;
         private System.Windows.Forms.PictureBox pictureBoxPlayer1;
         private System.Windows.Forms.Timer timer_Pull;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelNameChoice;
     }
 }
