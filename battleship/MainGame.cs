@@ -152,13 +152,15 @@ namespace battleship
                 timer_Pull.Stop();
         }
 
-        private void Push_Player_Choice(string p)
+        private void Push_Player_Choice(string p, string fieldName, string name)
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
             var updateP = Builders<BsonDocument>.Update.Set(p, false);
+            var updatePName = Builders<BsonDocument>.Update.Set(fieldName, name);
             collection.UpdateOne(filter, updateP);
+            collection.UpdateOne(filter, updatePName);
         }
 
         private void populateGrid(int offset, Panel panel, Grid grid, Button[,] btnGrid)
@@ -294,73 +296,36 @@ namespace battleship
         }
 
         private void P1()
-        {   if (!string.IsNullOrEmpty(textBoxName.Text))
-            {
-                stage = 2;
-                timer_Pull.Start();
-                Check_Ships("p1Ready", "p1Name",textBoxName.Text);
-            }
-            else
-            {
-                MessageBox.Show("you have not entered your name");
-            }
+        {   
+            stage = 2;
+            timer_Pull.Start();
+            Check_Ships("p1Ready");
         }
 
         private void P2()
-        {   if (!string.IsNullOrEmpty(textBoxName.Text))
-            {
-                stage = 2;
-                timer_Pull.Start();
-                Check_Ships("p2Ready", "p2Name",textBoxName.Text);
-            }
-            else
-            {
-                MessageBox.Show("you have not entered your name");
-            }
+        {   
+            stage = 2;
+            timer_Pull.Start();
+            Check_Ships("p2Ready");
         }
 
-        private void P(string fieldReady,string fieldName)
-        {
-            if (fieldReady == "p1Ready")
-            {
-                if (!string.IsNullOrEmpty(textBoxName.Text))
-                {
-                    stage = 2;
-                    timer_Pull.Start();
-                    Check_Ships(fieldReady, fieldName, textBoxName.Text);
-                }
-                else
-                {
-                    MessageBox.Show("you have not entered your name");
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(textBoxName.Text))
-                {
-                    stage = 2;
-                    timer_Pull.Start();
-                    Check_Ships(fieldReady, fieldName, textBoxName.Text);
-                }
-                else
-                {
-                    MessageBox.Show("you have not entered your name");
-                }
-            }
+        private void P(string fieldReady)
+        { 
+            stage = 2;
+            timer_Pull.Start();
+            Check_Ships(fieldReady);
         }
 
-        private void Push_ReadyP(string fieldReady, string fieldName, string name)
+        private void Push_ReadyP(string fieldReady)
         {
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
             var updatePReady = Builders<BsonDocument>.Update.Set(fieldReady, true);            
-            var updateP1Name = Builders<BsonDocument>.Update.Set(fieldName, name);
-            collection.UpdateOne(filter, updatePReady);
-            collection.UpdateOne(filter, updateP1Name);            
+            collection.UpdateOne(filter, updatePReady);         
         }
 
-        private void Check_Ships(string fieldReady, string fieldName, string name)
+        private void Check_Ships(string fieldReady)
         {
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
         Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
@@ -369,7 +334,7 @@ namespace battleship
             { }
             else
             {
-                Push_ReadyP(fieldReady, fieldName, name);
+                Push_ReadyP(fieldReady);
             }
         }
 
@@ -389,8 +354,6 @@ namespace battleship
         private void Start_Game()
         {
             stage = 3;
-            textBoxName.Hide();
-            labelNameChoice.Hide();
             exist = true;
             stopDragDrop = false;
             buttonStart.Hide();
@@ -554,13 +517,18 @@ namespace battleship
 
             private void pictureBoxPlayer1_Click(object sender, EventArgs e)
             {
-                if (PictureBoxPlayer1 && allowClick) {
+                if (PictureBoxPlayer1 && allowClick && !string.IsNullOrEmpty(textBoxName.Text))
+                {
                     player = 1;
-                    Push_Player_Choice("p1");
+                    Push_Player_Choice("p1", "p1Name", textBoxName.Text);
                     pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
                     PictureBoxPlayer1 = false;
                     allowClick = false;
+                    textBoxName.Hide();
+                    labelNameChoice.Hide();
                 }
+                else
+                    MessageBox.Show("please enter your name");
             }
 
             private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
@@ -579,13 +547,18 @@ namespace battleship
 
             private void pictureBoxPlayer2_Click(object sender, EventArgs e)
             {
-                if (PictureBoxPlayer2 && allowClick) {
+                if (PictureBoxPlayer2 && allowClick && !string.IsNullOrEmpty(textBoxName.Text)) 
+                {
                     player = 2;
-                    Push_Player_Choice("p2");
+                    Push_Player_Choice("p2","p2Name", textBoxName.Text);
                     pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
                     PictureBoxPlayer2 = false;
                     allowClick = false;
+                    textBoxName.Hide();
+                    labelNameChoice.Hide();
                 }
-            }
+                else
+                    MessageBox.Show("please enter your name");
+        }
         }
     } 
