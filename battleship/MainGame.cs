@@ -76,14 +76,18 @@ namespace battleship
             while (wait)
             {
                 int[] newCoordinates = Pull_Coordinates();
-                MessageBox.Show("x is  " + newCoordinates[0]);
-                MessageBox.Show("y is  " + newCoordinates[1]);
+                //MessageBox.Show("x is  " + newCoordinates[0]);
+                //MessageBox.Show("y is  " + newCoordinates[1]);
                 if (oldX != newCoordinates[0] || oldY != newCoordinates[1])
                 {
-                    MessageBox.Show("inside if  " + oldX + oldY);  
+                    //MessageBox.Show("inside if  " + oldX + oldY);
+                    if (grid1.theGrid[newCoordinates[0], newCoordinates[1]].CurrentlyOccupied)
+                        btnGrid1[newCoordinates[0], newCoordinates[1]].BackColor = Color.Red;
+                    else
+                        btnGrid1[newCoordinates[0], newCoordinates[1]].BackColor = Color.Green;
                     oldX = newCoordinates[0];
                     oldY = newCoordinates[1];
-                    MessageBox.Show("after initialization  " + oldX + oldY);
+                    //MessageBox.Show("after initialization  " + oldX + oldY);
                     break;
                 }
             }
