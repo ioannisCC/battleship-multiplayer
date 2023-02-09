@@ -18,6 +18,7 @@ namespace battleship
     {
         int player = 0;
         int stage = 1;
+        int turn = 0;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
         bool PictureBoxPlayer2 = true;
@@ -88,6 +89,9 @@ namespace battleship
             var updateP2Name = Builders<BsonDocument>.Update.Set("p2Name", "");
             var updateP1Ready = Builders<BsonDocument>.Update.Set("p1Ready", false);
             var updateP2Ready = Builders<BsonDocument>.Update.Set("p2Ready", false);
+            var updateX2 = Builders<BsonDocument>.Update.Set("x2", 0);
+            var updateY2 = Builders<BsonDocument>.Update.Set("y2", 0);
+
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
             collection.UpdateOne(filter, updateTmp);
@@ -97,6 +101,8 @@ namespace battleship
             collection.UpdateOne(filter, updateP2Name);
             collection.UpdateOne(filter, updateP1Ready);
             collection.UpdateOne(filter, updateP2Ready);
+            collection.UpdateOne(filter, updateX2);
+            collection.UpdateOne(filter, updateY2);
 
         }
 
@@ -148,6 +154,10 @@ namespace battleship
             }
             else if (stage == 2)
                 Pull_ReadyP();
+            else if (stage == 3)
+            {
+                Pull_Coordinates();
+            }
             else
                 timer_Pull.Stop();
         }
@@ -161,6 +171,38 @@ namespace battleship
             var updatePName = Builders<BsonDocument>.Update.Set(fieldName, name);
             collection.UpdateOne(filter, updateP);
             collection.UpdateOne(filter, updatePName);
+        }
+
+        private int[] Pull_Coordinates()
+        {
+            int[] coordinates = {0,0};
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
+            /* to kanoume epidh den jeroume pws na paroume to value twn p1, p2 kateyueian */
+            if (player == 2)
+            { 
+                string[] words = document.ToString().Split(',');
+                string[] temp = words[1].Split(':');
+                string x = temp[1].Substring(1, temp[1].Length - 1);
+                temp = words[2].Split(':');
+                string y = temp[1].Substring(1, temp[1].Length - 1);
+                coordinates[0] = Int32.Parse(x);
+                coordinates[1] = Int32.Parse(y);
+                return coordinates;
+            }
+            else
+            {
+                string[] words = document.ToString().Split(',');
+                string[] temp = words[10].Split(':');
+                string x2 = temp[1].Substring(1, temp[1].Length - 1);
+                temp = words[11].Split(':');
+                string y2 = temp[1].Substring(1, temp[1].Length - 2);
+                coordinates[0] = Int32.Parse(x2);
+                coordinates[1] = Int32.Parse(y2);
+                return coordinates;
+            }
+
         }
 
         private void populateGrid(int offset, Panel panel, Grid grid, Button[,] btnGrid)
@@ -219,12 +261,22 @@ namespace battleship
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updateX = Builders<BsonDocument>.Update.Set("x", Int32.Parse(clicked.Text.Substring(0, 1)));
-            var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length - 1)));
-            collection.UpdateOne(filter, updateX);
-            collection.UpdateOne(filter, updateY);
+            if (player == 1)
+            {
+                var updateX = Builders<BsonDocument>.Update.Set("x", Int32.Parse(clicked.Text.Substring(0, 1)));
+                var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length - 1)));
+                collection.UpdateOne(filter, updateX);
+                collection.UpdateOne(filter, updateY);
+            }
+            else
+            {
+                var updateX2 = Builders<BsonDocument>.Update.Set("x2", Int32.Parse(clicked.Text.Substring(0, 1)));
+                var updateY2 = Builders<BsonDocument>.Update.Set("y2", Int32.Parse(clicked.Text.Substring(clicked.Text.Length - 1)));
+                collection.UpdateOne(filter, updateX2);
+                collection.UpdateOne(filter, updateY2);
+            }
+           
             Wait();
-            stage++;
         }
 
         private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
@@ -354,6 +406,7 @@ namespace battleship
 
         private void Start_Game()
         {
+            turn++;
             stage = 3;
             exist = true;
             stopDragDrop = false;
@@ -361,7 +414,7 @@ namespace battleship
             panel1.Width = panel1.Width / 2;
             populateGrid(1, panel2, grid2, btnGrid2);
             //depopulateGrid(grid1, btnGrid1);
-            if (player == 2 && stage == 3)
+            if (!(turn%2 != 0))
             {
                 Wait();
             }
@@ -369,7 +422,6 @@ namespace battleship
             {
 
             }
-            int temp;
             
         }
 
