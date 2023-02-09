@@ -19,6 +19,7 @@ namespace battleship
         int player = 0;
         int stage = 1;
         int turn = 0;
+        int oldX = 0, oldY = 0;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
         bool PictureBoxPlayer2 = true;
@@ -72,7 +73,20 @@ namespace battleship
 
         private void Wait()
         {
-            while (wait) ;
+            while (wait)
+            {
+                int[] newCoordinates = Pull_Coordinates();
+                MessageBox.Show("x is  " + newCoordinates[0]);
+                MessageBox.Show("y is  " + newCoordinates[1]);
+                if (oldX != newCoordinates[0] || oldY != newCoordinates[1])
+                {
+                    MessageBox.Show("inside if  " + oldX + oldY);  
+                    oldX = newCoordinates[0];
+                    oldY = newCoordinates[1];
+                    MessageBox.Show("after initialization  " + oldX + oldY);
+                    break;
+                }
+            }
         }
 
         private void Initialize_Database()
@@ -156,7 +170,7 @@ namespace battleship
                 Pull_ReadyP();
             else if (stage == 3)
             {
-                Pull_Coordinates();
+                //Pull_Coordinates();
             }
             else
                 timer_Pull.Stop();
@@ -275,7 +289,6 @@ namespace battleship
                 collection.UpdateOne(filter, updateX2);
                 collection.UpdateOne(filter, updateY2);
             }
-           
             Wait();
         }
 
@@ -414,7 +427,7 @@ namespace battleship
             panel1.Width = panel1.Width / 2;
             populateGrid(1, panel2, grid2, btnGrid2);
             //depopulateGrid(grid1, btnGrid1);
-            if (!(turn%2 != 0))
+            if (player == 2)
             {
                 Wait();
             }
