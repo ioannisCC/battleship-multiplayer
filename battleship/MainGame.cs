@@ -17,7 +17,7 @@ namespace battleship
     public partial class MainGame : Form
     {
         int player = 0;
-        bool secondStage = false;
+        int stage = 1;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
         bool PictureBoxPlayer2 = true;
@@ -142,17 +142,18 @@ namespace battleship
 
         private void timer_Pull_Tick(object sender, EventArgs e)
         {
-            Pull_Player_Choice();
-            if (!PictureBoxPlayer1)     //gia na menei topika kitrino
-                pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-            if (!PictureBoxPlayer2)
-                pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-
-            if (secondStage)
+            if (stage == 1)
             {
-                Pull_ReadyP();
+                Pull_Player_Choice();
+                if (!PictureBoxPlayer1)     //gia na menei topika kitrino
+                    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+                if (!PictureBoxPlayer2)
+                    pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
             }
-
+            else if (stage == 2)
+                Pull_ReadyP();
+            else
+                timer_Pull.Stop();
         }
 
         private void Push_Player_Choice(string p)
@@ -289,11 +290,8 @@ namespace battleship
             }
             finally
             {
-                MessageBox.Show(p1Ready.ToString() + "p2:" + p2Ready.ToString());
                 if (p1Ready && p2Ready)
                 {
-                    MessageBox.Show("yeah");
-                    timer_Pull.Stop();
                     Start_Game();
                 }
             }
@@ -301,23 +299,23 @@ namespace battleship
 
         private void P1()
         {            
-            secondStage = true;
+            stage = 2;
             timer_Pull.Start();
             Check_Ships("p1Ready");                                    
         }
 
         private void P2()
         {            
-            secondStage = true;
+            stage = 2;
             timer_Pull.Start();
             Check_Ships("p2Ready");
         }
 
         private void P(string field)
         {            
-            secondStage = true;
+            stage = 2;
             timer_Pull.Start();
-            Check_Ships(field); //dfhvbiofdh;godhgd
+            Check_Ships(field);
         }
 
         private void Push_ReadyP(string field)
@@ -357,23 +355,27 @@ namespace battleship
 
         private void Start_Game()
         {
-                exist = true;
-                stopDragDrop = false;
-                /*foreach (var ocp in grid1.theGrid)
-                {
-                    if (ocp.CurrentlyOccupied)
-                        //MessageBox.Show(ocp.ToString());
-                }*/
-                panel1.Width = panel1.Width / 2;
-                populateGrid(1, panel2, grid2, btnGrid2);
-                //depopulateGrid(grid1, btnGrid1);
-                /*PictureBox pictureBoxSea = new PictureBox();
-                pictureBoxSea.Size = panel1.Size;
-                pictureBoxSea.Location = panel1.Location;
-                pictureBoxSea.ImageLocation = "istockphoto-1385726058-612x612.jpg";
-                pictureBoxSea.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBoxSea.BringToFront();
-                Controls.Add(pictureBoxSea);*/
+            stage = 3;
+            exist = true;
+            stopDragDrop = false;
+            buttonStart.Hide();
+            buttonStart.Controls.Remove(buttonStart);
+            //buttonStart.Enabled = false;
+            /*foreach (var ocp in grid1.theGrid)
+            {
+                if (ocp.CurrentlyOccupied)
+                    //MessageBox.Show(ocp.ToString());
+            }*/
+            panel1.Width = panel1.Width / 2;
+            populateGrid(1, panel2, grid2, btnGrid2);
+            //depopulateGrid(grid1, btnGrid1);
+            /*PictureBox pictureBoxSea = new PictureBox();
+            pictureBoxSea.Size = panel1.Size;
+            pictureBoxSea.Location = panel1.Location;
+            pictureBoxSea.ImageLocation = "istockphoto-1385726058-612x612.jpg";
+            pictureBoxSea.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxSea.BringToFront();
+             Controls.Add(pictureBoxSea);*/
 
             
         }
