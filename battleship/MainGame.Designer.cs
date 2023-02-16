@@ -43,6 +43,8 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.timer_Pull = new System.Windows.Forms.Timer(this.components);
             this.labelNameChoice = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.labelTimer = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
@@ -200,13 +202,30 @@
             // 
             this.labelNameChoice.AutoSize = true;
             this.labelNameChoice.BackColor = System.Drawing.Color.Transparent;
-            this.labelNameChoice.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelNameChoice.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelNameChoice.ForeColor = System.Drawing.Color.White;
-            this.labelNameChoice.Location = new System.Drawing.Point(345, 111);
+            this.labelNameChoice.Location = new System.Drawing.Point(351, 111);
             this.labelNameChoice.Name = "labelNameChoice";
-            this.labelNameChoice.Size = new System.Drawing.Size(708, 42);
+            this.labelNameChoice.Size = new System.Drawing.Size(700, 45);
             this.labelNameChoice.TabIndex = 6;
             this.labelNameChoice.Text = "enter your name and choose your captain";
+            // 
+            // timer
+            // 
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // labelTimer
+            // 
+            this.labelTimer.AutoSize = true;
+            this.labelTimer.BackColor = System.Drawing.Color.Transparent;
+            this.labelTimer.Font = new System.Drawing.Font("Tahoma", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelTimer.ForeColor = System.Drawing.Color.White;
+            this.labelTimer.Location = new System.Drawing.Point(1020, 9);
+            this.labelTimer.Name = "labelTimer";
+            this.labelTimer.Size = new System.Drawing.Size(269, 45);
+            this.labelTimer.TabIndex = 7;
+            this.labelTimer.Text = "time elapsed: 0";
             // 
             // MainGame
             // 
@@ -216,6 +235,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
+            this.Controls.Add(this.labelTimer);
             this.Controls.Add(this.labelNameChoice);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label1);
@@ -255,5 +275,7 @@
         private System.Windows.Forms.PictureBox pictureBoxPlayer1;
         private System.Windows.Forms.Timer timer_Pull;
         private System.Windows.Forms.Label labelNameChoice;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label labelTimer;
     }
 }

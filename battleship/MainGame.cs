@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace battleship
         int player = 0;
         int stage = 1;
         int turn = 1;
+        int timerVar = 0;
         int oldX = 0, oldY = 0;
         bool allowClick = true;
         bool PictureBoxPlayer1 = true; //true means available 
@@ -40,7 +42,6 @@ namespace battleship
             /* VERY IMPORTANT */
             pictureBoxShip5.MouseDown += new MouseEventHandler(pictureBoxShip5_MouseDown);
             pictureBoxShip5.MouseMove += new MouseEventHandler(pictureBoxShip5_MouseMove);
-
         }
 
         private static Cell setCurrentCell(Grid g)
@@ -68,6 +69,8 @@ namespace battleship
             pictureBoxShip4.Hide();
             pictureBoxShip5.Hide();
             buttonStart.Hide();
+            /*delegate void del();
+            Thread t1 = new Thread();*/
         }
 
         private void Initialize_Database()
@@ -149,28 +152,32 @@ namespace battleship
 
             if (greyCounter == 14 && player == 1)
             {
-                MessageBox.Show("captain jack wins");
+                MessageBox.Show("captain croitor wins");
+                timer_Pull.Stop();
+                timer.Stop();
             }
             else if (greyCounter == 14 && player == 2)
             {
-                MessageBox.Show("captain croitor wins");
+                MessageBox.Show("captain jack wins");
+                timer_Pull.Stop();
+                timer.Stop();
             }
             else if (redCounter == 14 && player == 1)
             {
                 MessageBox.Show("captain jack wins");
+                timer_Pull.Stop();
+                timer.Stop();
             }
             else if (redCounter == 14 && player == 2)
             {
                 MessageBox.Show("captain croitor wins");
+                timer_Pull.Stop();
+                timer.Stop();
             }
-
         }
 
         private void timer_Pull_Tick(object sender, EventArgs e)
         {
-
-
-
             if (stage == 1)
             {
                 Pull_Player_Choice();
@@ -509,6 +516,7 @@ namespace battleship
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
+            timer.Start();
             if (player == 1)
             {
                 P1();
@@ -671,7 +679,13 @@ namespace battleship
                     pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
             }
 
-            private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            timerVar++;
+            labelTimer.Text = "time elapsed: " + timerVar;
+        }
+
+        private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
             {
 
                 if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
