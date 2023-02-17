@@ -39,6 +39,8 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelLoadingText = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
@@ -54,8 +56,6 @@
             this.pictureBox13 = new System.Windows.Forms.PictureBox();
             this.logo = new System.Windows.Forms.PictureBox();
             this.labelInstructions = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.labelLoadingText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -182,9 +182,27 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(1658, 1248);
+            this.groupBox1.Size = new System.Drawing.Size(113, 1248);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
+            // 
+            // labelLoadingText
+            // 
+            this.labelLoadingText.AutoSize = true;
+            this.labelLoadingText.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLoadingText.Location = new System.Drawing.Point(255, 802);
+            this.labelLoadingText.Name = "labelLoadingText";
+            this.labelLoadingText.Size = new System.Drawing.Size(66, 38);
+            this.labelLoadingText.TabIndex = 13;
+            this.labelLoadingText.Text = "0%";
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(1633, 593);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
             // 
             // panel2
             // 
@@ -226,7 +244,7 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(178, 1081);
+            this.label6.Location = new System.Drawing.Point(-595, 1081);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(68, 39);
@@ -362,24 +380,6 @@
             this.labelInstructions.Text = "1. Choose your captain\r\n2. Drag and drop the ships on the panel\r\n3. You can rotat" +
     "e a ship by double clicking it\r\n4. Press the \"Start\" buton once you have placed " +
     "all your ships \r\n";
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(1633, 593);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
-            // 
-            // labelLoadingText
-            // 
-            this.labelLoadingText.AutoSize = true;
-            this.labelLoadingText.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoadingText.Location = new System.Drawing.Point(255, 802);
-            this.labelLoadingText.Name = "labelLoadingText";
-            this.labelLoadingText.Size = new System.Drawing.Size(68, 39);
-            this.labelLoadingText.TabIndex = 13;
-            this.labelLoadingText.Text = "0%";
             // 
             // Game
             // 
