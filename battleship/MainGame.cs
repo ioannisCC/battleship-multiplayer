@@ -16,6 +16,7 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
+        int steps = 0;
         int player = 0;
         int stage = 1;
         int turn = 1;
@@ -69,8 +70,6 @@ namespace battleship
             pictureBoxShip4.Hide();
             pictureBoxShip5.Hide();
             buttonStart.Hide();
-            /*delegate void del();
-            Thread t1 = new Thread();*/
         }
 
         private void Initialize_Database()
@@ -398,6 +397,7 @@ namespace battleship
             }
 
             turn++;
+            steps++;
             //Wait();
         }
 
