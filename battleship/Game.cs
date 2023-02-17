@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using NAudio.Wave;
 using System.IO;
 using System.Media;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace battleship
 {
@@ -20,32 +22,20 @@ namespace battleship
         int[] rainSpeeds = { 4, 6, 8, 3, 5, 6, 7, 4, 2 };
         int loadingSpeed = 100;
         float initialPercentage = 0;
-
-        /* function in order to make the main menu options look between arrow when hovering*/
-        private void Show_Arrows(int X1, int Y1, int X2, int Y2)
-        {
-            pictureBox1.Location = new Point(X1, Y1);
-            pictureBox1.ImageLocation = "RightArrow.png";
-            pictureBox1.Size = new Size(54, 37);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.Show();
-            pictureBox2.Location = new Point(X2, Y2);
-            pictureBox2.ImageLocation = "leftArrow.png";
-            pictureBox2.Size = new Size(54, 37);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.Show();
-
-        }
-        private void Hide_Arrows()
-        {
-            pictureBox1.Hide();
-            pictureBox2.Hide();
-        }
+        MongoClient dbClient;
 
         public Game()
         {
             InitializeComponent();
             //Play_Sound("Bear_McCreary_-Memories_of_Mother_Gratomic.com.wav");
+        }
+
+        private void Initialize_Database()
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateX = Builders<BsonDocument>.Update.Set("timesPlayed", 0);
         }
 
         void Play_Sound(string filename)
@@ -59,54 +49,11 @@ namespace battleship
 
         private void Game_Load(object sender, EventArgs e)
         {
-            pictureBox3.Hide();
             groupBox1.Hide();
             labelInstructions.Hide();
-        }        
-
-        private void label2_MouseLeave(object sender, EventArgs e)
-        {
-            Hide_Arrows();
-        }
-
-        private void label2_MouseEnter(object sender, EventArgs e)
-        {
-            Show_Arrows(115, 275, 331, 275);
-        }
-
-        private void label3_MouseEnter(object sender, EventArgs e)
-        {
-            Show_Arrows(33, 387, 415, 387);
-        }
-
-        private void label3_MouseLeave(object sender, EventArgs e)
-        {
-            Hide_Arrows();
-        }
-
-        private void label4_MouseEnter(object sender, EventArgs e)
-        {
-            Show_Arrows(115, 514, 323, 514);
-        }
-
-        private void label4_MouseLeave(object sender, EventArgs e)
-        {
-            Hide_Arrows();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-            foreach(var lbl in Controls.OfType<Label>())
-               lbl.Hide();
-
-            pictureBox3.Show();
-            labelInstructions.Show();
-            
+            dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
+            Initialize_Database();
+            buttonMainMenu.Hide();
         }
 
         /* loading screen code start*/
@@ -193,15 +140,41 @@ namespace battleship
                 this.timer1.Stop();
                 this.timer2.Stop();
                 this.Hide();
-                MainGame instance = new MainGame();
+                MainGame instance = new MainGame(dbClient);
                 instance.Show();                
             }
         }
 
         /* loading screen code end */
 
+        private void buttonOptions_Click(object sender, EventArgs e)
+        {
+            foreach (var lbl in Controls.OfType<Label>())
+                lbl.Hide();
+
+            buttonOptions.Hide();
+            buttonExit.Hide();
+            buttonPlay.Hide();
+            buttonMainMenu.Show();
+            labelInstructions.Show();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void buttonMainMenu_Click(object sender, EventArgs e)
+        {
+            label2.Show();
+            labelInstructions.Hide();
+            buttonExit.Show();
+            buttonPlay.Show();
+            buttonOptions.Show();
+        }
+
         /* initiate loading screen*/
-        private void label2_Click(object sender, EventArgs e)
+        private void buttonPlay_Click(object sender, EventArgs e)
         {
             foreach (var lbl in Controls.OfType<Label>())
                 lbl.Hide();
@@ -212,18 +185,6 @@ namespace battleship
             groupBox1.Show();
             timer1.Start();
             timer2.Start();
-            /*GraphicsPath shape = new GraphicsPath();
-            shape.AddEllipse(0, 0, 50, 50);
-            this.Region = new Region(shape);*/
-        }
-
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-            pictureBox3.Hide();
-            label2.Show();
-            label3.Show();
-            label4.Show();
-            labelInstructions.Hide();
         }
     }
 }

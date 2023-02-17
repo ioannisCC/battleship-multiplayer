@@ -38,13 +38,13 @@ namespace battleship
         public static string name;
 
 
-        public MainGame()
+        public MainGame(MongoClient dbClient)
         {
             InitializeComponent();
+            this.dbClient = dbClient;
             /* VERY IMPORTANT */
             pictureBoxShip5.MouseDown += new MouseEventHandler(pictureBoxShip5_MouseDown);
             pictureBoxShip5.MouseMove += new MouseEventHandler(pictureBoxShip5_MouseMove);
-
         }
 
         private static Cell setCurrentCell(Grid g)
@@ -63,11 +63,9 @@ namespace battleship
 
         private void MainGame_Load(object sender, EventArgs e)
         {
-            dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
             Initialize_Database();
             Bitmap bm = new Bitmap(new Bitmap("scope.png"), 50, 50);
             Cursor = new Cursor(bm.GetHicon());
-            //  populateGrid(2, panel1, grid1, btnGrid1);
             pictureBoxShip5.AllowDrop = true;
             pictureBoxShip2.Hide();
             pictureBoxShip3.Hide();
@@ -76,6 +74,7 @@ namespace battleship
             buttonStart.Hide();
             pictureBoxVictory.Hide();
             pictureBoxDefeat.Hide();
+            labelTimer.Hide();
         }
 
         private void Initialize_Database()
@@ -94,6 +93,10 @@ namespace battleship
             var updateX2 = Builders<BsonDocument>.Update.Set("x2", 0);
             var updateY2 = Builders<BsonDocument>.Update.Set("y2", 0);
             var updateHit = Builders<BsonDocument>.Update.Set("hit", false);
+            var updateHitsP1 = Builders<BsonDocument>.Update.Set("hitsP1", 0);
+            var updateHitsP2 = Builders<BsonDocument>.Update.Set("hitsP2", 0);
+            var updateMissesP1 = Builders<BsonDocument>.Update.Set("missesP1", 0);
+            var updateMissesP2 = Builders<BsonDocument>.Update.Set("missesP2", 0);
 
             collection.UpdateOne(filter, updateX);
             collection.UpdateOne(filter, updateY);
@@ -106,7 +109,32 @@ namespace battleship
             collection.UpdateOne(filter, updateP2Ready);
             collection.UpdateOne(filter, updateX2);
             collection.UpdateOne(filter, updateY2);
+            collection.UpdateOne(filter, updateHitsP1);
+            collection.UpdateOne(filter, updateHitsP2);
+            collection.UpdateOne(filter, updateMissesP1);
+            collection.UpdateOne(filter, updateMissesP2);
+        }
 
+        private void Push_Statistics(int redCounter, int grayCounter, int greenCounter)
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+
+            if (player==1)
+            {
+                var updateHitsP1 = Builders<BsonDocument>.Update.Set("hitsP1", redCounter);
+                var updateMissesP1 = Builders<BsonDocument>.Update.Set("missesP1", greenCounter);
+                collection.UpdateOne(filter, updateHitsP1);
+                collection.UpdateOne(filter, updateMissesP1);
+            }
+            else
+            {
+                var updateHitsP2 = Builders<BsonDocument>.Update.Set("hitsP2", redCounter);
+                var updateMissesP2 = Builders<BsonDocument>.Update.Set("missesP2", greenCounter);
+                collection.UpdateOne(filter, updateHitsP2);
+                collection.UpdateOne(filter, updateMissesP2);
+            }           
         }
 
         private void Pull_Player_Choice()
@@ -123,6 +151,7 @@ namespace battleship
                 pictureBoxPlayer1.Hide();
                 pictureBoxPlayer2.Hide();
                 timer_Pull.Stop();
+                buttonStart.Show();
             }
             else if (p1 == false)
             {
@@ -143,39 +172,56 @@ namespace battleship
 
         private void CheckGameStatus()
         {
-            int greyCounter = 0;
+            int grayCounter = 0;
             int redCounter = 0;
+            int greenCounter = 0;
             for (int i = 0; i < grid1.Size; i++)
                 for (int j = 0; j < grid1.Size; j++)
                     if (grid1.theGrid[i, j].CurrentlyOccupied && btnGrid1[i, j].BackColor == Color.Gray)
-                        greyCounter++;
+                        grayCounter++;
 
             for (int i = 0; i < grid2.Size; i++)
                 for (int j = 0; j < grid2.Size; j++)
                     if (btnGrid2[i, j].BackColor == Color.Red)
                         redCounter++;
+                    else if (btnGrid2[i, j].BackColor == Color.Green)
+                        greenCounter++;
 
-            if (greyCounter == 14 && player == 1)
+            if (grayCounter == 14 && player == 1)
             {
                 timer_Pull.Stop();
                 timer.Stop();
                 panel1.Hide();
                 panel2.Hide();
                 //MessageBox.Show("captain croitor wins");
+                Push_Statistics(redCounter, grayCounter, greenCounter);
                 pictureBoxDefeat.Show();
                 pictureBoxDefeat.Focus();
                 pictureBoxDefeat.BringToFront();
+                ScoreBoard scoreForm = new ScoreBoard(steps,redCounter,greenCounter,player,dbClient,timerVar);
+                scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
+                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
+                Thread.Sleep(2000);
+                this.Hide();
+                scoreForm.Show();
             }
-            else if (greyCounter == 14 && player == 2)
+            else if (grayCounter == 14 && player == 2)
             {
                 timer_Pull.Stop();
                 timer.Stop();
                 panel1.Hide();
                 panel2.Hide();
                 //MessageBox.Show("captain Jack wins");
+                Push_Statistics(redCounter, grayCounter, greenCounter);
                 pictureBoxDefeat.Show();
                 pictureBoxDefeat.Focus();
                 pictureBoxDefeat.BringToFront();
+                ScoreBoard scoreForm = new ScoreBoard(steps,redCounter,greenCounter,player,dbClient,timerVar);
+                scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
+                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
+                Thread.Sleep(2000);
+                this.Hide();
+                scoreForm.Show();
             }
             else if (redCounter == 14 && player == 1)
             {
@@ -184,9 +230,16 @@ namespace battleship
                 panel1.Hide();
                 panel2.Hide();
                 //MessageBox.Show("captain jack wins");
+                Push_Statistics(redCounter, grayCounter, greenCounter);
                 pictureBoxVictory.Show();
                 pictureBoxVictory.Focus();
                 pictureBoxVictory.BringToFront();
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter,player,dbClient,timerVar);
+                scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
+                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
+                Thread.Sleep(2000);
+                this.Hide();
+                scoreForm.Show();
             }
             else if (redCounter == 14 && player == 2)
             {
@@ -195,9 +248,16 @@ namespace battleship
                 panel1.Hide();
                 panel2.Hide();
                 //MessageBox.Show("captain croitor wins");
+                Push_Statistics(redCounter, grayCounter, greenCounter);
                 pictureBoxVictory.Show();
                 pictureBoxVictory.Focus();
                 pictureBoxVictory.BringToFront();
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter,player,dbClient,timerVar);
+                scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
+                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
+                Thread.Sleep(2000);
+                this.Hide();
+                scoreForm.Show();
             }
 
         }
@@ -363,7 +423,7 @@ namespace battleship
             pictureBoxShip3.Show();
             pictureBoxShip4.Show();
             pictureBoxShip5.Show();
-            buttonStart.Show();
+            //buttonStart.Show();
         }
 
         private void depopulateGrid(Grid grid, Button[,] btnGrid)
@@ -561,6 +621,7 @@ namespace battleship
             stage = 3;
             exist = true;
             stopDragDrop = false;
+            labelTimer.Show();
             buttonStart.Hide();
             panel1.Width = panel1.Width / 2;
             populateGrid(1, panel2, grid2, btnGrid2);
@@ -572,11 +633,7 @@ namespace battleship
                     btn.Enabled = false;
                 }
             }
-            else
-            {
-
-            }
-
+            else { }
         }
 
         void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
@@ -732,7 +789,7 @@ namespace battleship
                 PictureBoxPlayer1 = false;
                 allowClick = false;
                 textBoxName.Hide();
-                labelNameChoice.Hide();
+                pictureBoxEnterName.Hide();
             }
             else
                 MessageBox.Show("please enter your name");
@@ -762,7 +819,7 @@ namespace battleship
                 PictureBoxPlayer2 = false;
                 allowClick = false;
                 textBoxName.Hide();
-                labelNameChoice.Hide();
+                pictureBoxEnterName.Hide();
             }
             else
                 MessageBox.Show("please enter your name");
