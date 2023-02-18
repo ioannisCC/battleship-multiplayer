@@ -104,7 +104,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(-46, -53);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(85, 1014);
+            this.groupBox1.Size = new System.Drawing.Size(1238, 1014);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             // 
@@ -112,7 +112,7 @@
             // 
             this.labelLoadingText.AutoSize = true;
             this.labelLoadingText.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLoadingText.Location = new System.Drawing.Point(191, 652);
+            this.labelLoadingText.Location = new System.Drawing.Point(204, 659);
             this.labelLoadingText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelLoadingText.Name = "labelLoadingText";
             this.labelLoadingText.Size = new System.Drawing.Size(55, 31);
@@ -165,7 +165,7 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(-446, 878);
+            this.label6.Location = new System.Drawing.Point(131, 878);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(55, 31);
             this.label6.TabIndex = 12;

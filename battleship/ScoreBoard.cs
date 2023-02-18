@@ -18,9 +18,11 @@ namespace battleship
         private int hits = 0;
         private int misses = 0;
         private int player = 0;
+        private int winsP1 = 0;
+        private int winsP2 = 0;
         MongoClient dbClient;
         int timeVar = 0;
-        public ScoreBoard(int steps, int hits, int misses, int player, MongoClient dbClient, int timeVar)
+        public ScoreBoard(int steps, int hits, int misses, int player, MongoClient dbClient, int timeVar, int winsP1, int winsP2)
         {
             InitializeComponent();
             this.steps = steps;
@@ -29,6 +31,8 @@ namespace battleship
             this.player = player;
             this.dbClient = dbClient;
             this.timeVar = timeVar;
+            this.winsP1 = winsP1;
+            this.winsP2 = winsP2;
         }
 
         private void ScoreBoard_Load(object sender, EventArgs e)
@@ -37,39 +41,24 @@ namespace battleship
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
 
-            labelTotalTurns.Text = steps.ToString();
+            labelTotalTurns.Text = (2 * steps).ToString();
             labelCroitorDuration.Text = timeVar.ToString();
             labelJackDuration.Text = timeVar.ToString();
+            labelJackName.Text = document["p1Name"].ToString();
+            labelCroitorName.Text = document["p2Name"].ToString();
+            labelJackWins.Text = winsP1.ToString();
+            labelCroitorWins.Text = winsP2.ToString();
 
             if (player == 1)
             {
-                if ((hits * 10 - misses) > (document["hitsP2"].AsInt32 * 10 - document["missesP2"].AsInt32))
-                {
-                    labelCroitorScore.ForeColor = Color.Gold;
-                    labelCroitorScore.Font = new Font(labelCroitorScore.Font.FontFamily, 40, labelCroitorScore.Font.Style);
-                }
-                else 
+                int hitsP2 = document["hitsP2"].AsInt32;
+                int missesP2 = document["missesP2"].AsInt32;
+
+
+                if ((hits * 10 - misses) > (hitsP2 * 10 - missesP2))
                 {
                     labelJackScore.ForeColor = Color.Gold;
                     labelJackScore.Font = new Font(labelJackScore.Font.FontFamily, 40, labelJackScore.Font.Style);
-                }
-
-                labelJackHits.Text = hits.ToString();
-                labelJackMisses.Text = misses.ToString();
-                labelJackAccuracy.Text = ((hits/(misses+hits))*100).ToString() + "%";
-                labelJackScore.Text = (hits*10-misses).ToString();
-
-                labelCroitorHits.Text = document["hitsP2"].AsInt32.ToString();
-                labelCroitorMisses.Text = document["missesP2"].AsInt32.ToString();
-                labelCroitorAccuracy.Text = ((document["hitsP2"].AsInt32 / (document["missesP2"].AsInt32 + document["hitsP2"].AsInt32)) * 100).ToString() + "%";
-                labelCroitorScore.Text = (document["hitsP2"].AsInt32 * 10 - document["missesP2"].AsInt32).ToString();
-            }
-            else
-            {
-                if ((hits * 10 - misses) > (document["hitsP1"].AsInt32 * 10 - document["missesP1"].AsInt32))
-                {
-                    labelJackScore.ForeColor = Color.Gold;
-                    labelJackScore.Font = new Font(labelJackScore.Font.FontFamily, 40, labelJackScore.Font.Style);                    
                 }
                 else
                 {
@@ -77,22 +66,45 @@ namespace battleship
                     labelCroitorScore.Font = new Font(labelCroitorScore.Font.FontFamily, 40, labelCroitorScore.Font.Style);
                 }
 
+                labelJackHits.Text = hits.ToString();
+                labelJackMisses.Text = misses.ToString();
+                labelJackScore.Text = (hits * 10 - misses).ToString();
+
+                labelCroitorHits.Text = hitsP2.ToString();
+                labelCroitorMisses.Text = missesP2.ToString();
+                labelCroitorScore.Text = (hitsP2 * 10 - missesP2).ToString();
+            }
+            else
+            {
+                int hitsP1 = document["hitsP1"].AsInt32;
+                int missesP1 = document["missesP1"].AsInt32;
+
+
+                if ((hits * 10 - misses) > (hitsP1 * 10 - missesP1))
+                {
+                    labelCroitorScore.ForeColor = Color.Gold;
+                    labelCroitorScore.Font = new Font(labelCroitorScore.Font.FontFamily, 40, labelCroitorScore.Font.Style);
+                }
+                else
+                {
+                    labelJackScore.ForeColor = Color.Gold;
+                    labelJackScore.Font = new Font(labelJackScore.Font.FontFamily, 40, labelJackScore.Font.Style);
+                }
+
                 labelCroitorHits.Text = hits.ToString();
                 labelCroitorMisses.Text = misses.ToString();
-                labelCroitorAccuracy.Text = ((hits / (misses + hits)) * 100).ToString() + "%";
-                labelCroitorScore.Text = (hits * 10 - misses * 1).ToString();
+                labelCroitorScore.Text = (hits * 10 - misses).ToString();
 
-                labelJackHits.Text = document["hitsP1"].AsInt32.ToString();
-                labelJackMisses.Text = document["missesP1"].AsInt32.ToString();
-                labelJackAccuracy.Text = ((document["hitsP1"].AsInt32 / (document["missesP1"].AsInt32 + document["hitsP1"].AsInt32)) * 100).ToString() + "%";
-                labelJackScore.Text = (document["hitsP1"].AsInt32 * 10 - document["missesP1"].AsInt32).ToString();
+                labelJackHits.Text = hitsP1.ToString();
+                labelJackMisses.Text = missesP1.ToString();
+                labelJackScore.Text = (hitsP1 * 10 - missesP1).ToString();
             }
         }
 
         private void Rematch()
         {
             this.Hide();
-            MainGame rematchMaingame = new MainGame(dbClient);
+            MainGame rematchMaingame = new MainGame(dbClient,winsP1,winsP2);
             rematchMaingame.Show();
         }
 
@@ -104,6 +116,11 @@ namespace battleship
         private void pictureBoxRematch_Click(object sender, EventArgs e)
         {
             Rematch();
+        }
+
+        private void ScoreBoard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

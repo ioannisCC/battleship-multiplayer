@@ -21,6 +21,8 @@ namespace battleship
         private WaveOut MusicOut;
         int[] rainSpeeds = { 4, 6, 8, 3, 5, 6, 7, 4, 2 };
         int loadingSpeed = 100;
+        int winsP1 = 0;
+        int winsP2 = 0;
         float initialPercentage = 0;
         MongoClient dbClient;
 
@@ -35,7 +37,6 @@ namespace battleship
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updateX = Builders<BsonDocument>.Update.Set("timesPlayed", 0);
         }
 
         void Play_Sound(string filename)
@@ -140,7 +141,7 @@ namespace battleship
                 this.timer1.Stop();
                 this.timer2.Stop();
                 this.Hide();
-                MainGame instance = new MainGame(dbClient);
+                MainGame instance = new MainGame(dbClient, winsP1, winsP2);
                 instance.Show();                
             }
         }
@@ -168,6 +169,7 @@ namespace battleship
         {
             label2.Show();
             labelInstructions.Hide();
+            buttonMainMenu.Hide();
             buttonExit.Show();
             buttonPlay.Show();
             buttonOptions.Show();
@@ -185,6 +187,9 @@ namespace battleship
             groupBox1.Show();
             timer1.Start();
             timer2.Start();
+            buttonPlay.Hide();
+            buttonOptions.Hide();
+            buttonExit.Hide();
         }
     }
 }

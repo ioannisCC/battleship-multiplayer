@@ -213,14 +213,13 @@
             this.labelTimer.AutoSize = true;
             this.labelTimer.BackColor = System.Drawing.Color.Transparent;
             this.labelTimer.Font = new System.Drawing.Font("Tahoma", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTimer.ForeColor = System.Drawing.Color.White;
-            this.labelTimer.Image = ((System.Drawing.Image)(resources.GetObject("labelTimer.Image")));
-            this.labelTimer.Location = new System.Drawing.Point(1083, 23);
+            this.labelTimer.ForeColor = System.Drawing.Color.Black;
+            this.labelTimer.Location = new System.Drawing.Point(1072, 23);
             this.labelTimer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTimer.Name = "labelTimer";
-            this.labelTimer.Size = new System.Drawing.Size(235, 39);
+            this.labelTimer.Size = new System.Drawing.Size(243, 39);
             this.labelTimer.TabIndex = 7;
-            this.labelTimer.Text = "time elapsed: 0";
+            this.labelTimer.Text = "Time elapsed: 0";
             // 
             // pictureBoxVictory
             // 
@@ -256,7 +255,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
