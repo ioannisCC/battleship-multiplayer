@@ -55,6 +55,7 @@
             this.buttonOptions = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonMainMenu = new System.Windows.Forms.Button();
+            this.pictureBoxAudio = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -68,6 +69,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -104,7 +106,7 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Location = new System.Drawing.Point(-46, -53);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1238, 1014);
+            this.groupBox1.Size = new System.Drawing.Size(1250, 1014);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             // 
@@ -165,7 +167,7 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(131, 878);
+            this.label6.Location = new System.Drawing.Point(137, 878);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(55, 31);
             this.label6.TabIndex = 12;
@@ -342,6 +344,17 @@
             this.buttonMainMenu.UseVisualStyleBackColor = true;
             this.buttonMainMenu.Click += new System.EventHandler(this.buttonMainMenu_Click);
             // 
+            // pictureBoxAudio
+            // 
+            this.pictureBoxAudio.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxAudio.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxAudio.Image")));
+            this.pictureBoxAudio.Location = new System.Drawing.Point(1064, 12);
+            this.pictureBoxAudio.Name = "pictureBoxAudio";
+            this.pictureBoxAudio.Size = new System.Drawing.Size(82, 86);
+            this.pictureBoxAudio.TabIndex = 14;
+            this.pictureBoxAudio.TabStop = false;
+            this.pictureBoxAudio.Click += new System.EventHandler(this.pictureBoxAudio_Click);
+            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,6 +363,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1168, 646);
+            this.Controls.Add(this.pictureBoxAudio);
             this.Controls.Add(this.buttonMainMenu);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonOptions);
@@ -378,6 +392,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.logo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -409,6 +424,7 @@
         private System.Windows.Forms.Button buttonOptions;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonMainMenu;
+        private System.Windows.Forms.PictureBox pictureBoxAudio;
     }
 }
 

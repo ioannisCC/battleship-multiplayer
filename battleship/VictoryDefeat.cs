@@ -14,18 +14,31 @@ namespace battleship
     {
         bool victory = false;
 
-        public VictoryDefeat(bool vitory)
+        public VictoryDefeat(bool victory)
         {
             InitializeComponent();
-            this.victory = vitory;
+            this.victory = victory;
         }
 
         private void VictoryDefeat_Load(object sender, EventArgs e)
         {
+            pictureBoxVictory.Hide();
+            pictureBoxDefeat.Hide();
+            Determine_PictureBox(victory);
+        }
+
+        private void Determine_PictureBox(bool victory)
+        {
             if (victory)
-                pictureBoxVictoryDefeat.ImageLocation = "victory.png";
+            { 
+                pictureBoxVictory.Show();
+                MessageBox.Show("inside true if");
+            }
             else
-                pictureBoxVictoryDefeat.ImageLocation = "defeat.png";
+            {
+                pictureBoxDefeat.Show();
+                MessageBox.Show("inside false if");
+            }
         }
     }
 }

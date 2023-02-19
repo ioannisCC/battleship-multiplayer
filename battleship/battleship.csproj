@@ -176,6 +176,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="Game.cs">
       <SubType>Form</SubType>

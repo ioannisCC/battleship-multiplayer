@@ -16,69 +16,59 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
-        bool check = true;
-        int player = 0;
-        int stage = 1;
+        bool check = true; /* used to disable the mouse click event whenever is the other's player turn */
+        bool allowClick = true;
+        bool PictureBoxPlayer1 = true; /* true means captain1 (jack) is available */
+        bool PictureBoxPlayer2 = true; /* true means captain2 (croitor) is available */
+        int player = 0; /* which player are you (1: jack or 2: croitor) */
+        int stage = 1;  /* used at timer_Pull in order to determine eacg stage of the game (captain choice, ship placement, game itself) */
         int winsP1 = 0;
         int winsP2 = 0;
-        int turn = 1;
+        int turn = 1;  /* which players turn is */
         int oldX = 0, oldY = 0;
-        int steps = 0;
-        int timerVar;
-        bool allowClick = true;
-        bool PictureBoxPlayer1 = true; //true means available 
-        bool PictureBoxPlayer2 = true;
+        int steps = 0; /* # of turns in order to terminate the game */
+        int timerVar; /* game duration */
+        int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0; /* for ships rotation */
+        public static string name; /* player's name */
+        public bool stopDragDrop = true;
+        bool exist = false; /* in order to make clickable only the second grid */
         static Grid grid1 = new Grid(10);
         static Grid grid2 = new Grid(10);
         public Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
         public Button[,] btnGrid2 = new Button[grid2.Size, grid2.Size];
-        int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0;
-        public bool stopDragDrop = true, wait = true;
-        bool exist = false;
         Point offset;
         Point mousePosition;
         MongoClient dbClient;
-        public static string name;
+        Audio bgMusic;
+        Audio hit;
+        Audio miss;
 
 
-        public MainGame(MongoClient dbClient, int winsP1, int winsP2)
+        public MainGame(MongoClient dbClient, int winsP1, int winsP2, Audio bgMusic)
         {
             InitializeComponent();
             this.dbClient = dbClient;
-            /* VERY IMPORTANT */
+            /* VERY IMPORTANT for drag and drop (ship movement) */
             pictureBoxShip5.MouseDown += new MouseEventHandler(pictureBoxShip5_MouseDown);
             pictureBoxShip5.MouseMove += new MouseEventHandler(pictureBoxShip5_MouseMove);
             this.winsP1 = winsP1;
             this.winsP2 = winsP2;
+            this.bgMusic = bgMusic;
         }
-
-        private static Cell setCurrentCell(Grid g)
-        {
-            //get current row number
-            int currentRow = 0;
-            //get current column number
-            int currentColumn = 0;
-            g.theGrid[currentRow, currentColumn].CurrentlyOccupied = true;
-            return g.theGrid[currentRow, currentColumn];
-        }
-
-
-        Cell currentCell1 = setCurrentCell(grid1);
-        Cell currentCell2 = setCurrentCell(grid2);
 
         private void MainGame_Load(object sender, EventArgs e)
         {
             Initialize_Database();
             Bitmap bm = new Bitmap(new Bitmap("scope.png"), 50, 50);
             Cursor = new Cursor(bm.GetHicon());
+            hit = new Audio("explosion.mp3");
+            miss = new Audio("splash.mp3");
             pictureBoxShip5.AllowDrop = true;
             pictureBoxShip2.Hide();
             pictureBoxShip3.Hide();
             pictureBoxShip4.Hide();
             pictureBoxShip5.Hide();
             buttonStart.Hide();
-            pictureBoxVictory.Hide();
-            pictureBoxDefeat.Hide();
             labelTimer.Hide();
         }
 
@@ -142,6 +132,17 @@ namespace battleship
             }
         }
 
+        private void Push_Player_Choice(string p, string fieldName, string name)
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updateP = Builders<BsonDocument>.Update.Set(p, false);
+            var updatePName = Builders<BsonDocument>.Update.Set(fieldName, name);
+            collection.UpdateOne(filter, updateP);
+            collection.UpdateOne(filter, updatePName);
+        }
+
         private void Pull_Player_Choice()
         {
             var database = dbClient.GetDatabase("battleship");
@@ -159,21 +160,92 @@ namespace battleship
                 buttonStart.Show();
             }
             else if (p1 == false)
-            {
-                //allowClick = false;
                 Disable_Captain1();
-            }
             else if (p2 == false)
-            {
-                //allowClick = false;
                 Disable_Captain2();
+        }
+
+        private void Push_ReadyP(string fieldReady)
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
+            var updatePReady = Builders<BsonDocument>.Update.Set(fieldReady, true);
+            collection.UpdateOne(filter, updatePReady);
+        }
+
+        private void Pull_ReadyP()
+        {
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", true);
+            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", true);
+            var documentP1 = collection.Find(filterP1).FirstOrDefault();
+            var documentP2 = collection.Find(filterP2).FirstOrDefault();
+            var (p1Ready, p2Ready) = (false, false);
+            try
+            {
+                p1Ready = documentP1["p1Ready"].AsBoolean;
+                p2Ready = documentP2["p2Ready"].AsBoolean;
             }
+            catch
+            {
+
+            }
+            finally
+            {
+                if (p1Ready && p2Ready)
+                {
+                    Start_Game();
+                }
+            }
+        }
+
+        private int[] Pull_Coordinates()
+        {
+            int[] coordinates = { 0, 0 };
+            var database = dbClient.GetDatabase("battleship");
+            var collection = database.GetCollection<BsonDocument>("targetLocation");
+            BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
+            if (player == 2)
+            {
+                /*string[] words = document.ToString().Split(',');
+                string[] temp = words[1].Split(':');
+                string x = temp[1].Substring(1, temp[1].Length - 1);
+                temp = words[2].Split(':');
+                string y = temp[1].Substring(1, temp[1].Length - 1);
+                coordinates[0] = Int32.Parse(x);
+                coordinates[1] = Int32.Parse(y);
+                return coordinates;*/
+                coordinates[0] = document["x"].AsInt32;
+                coordinates[1] = document["y"].AsInt32;
+            }
+            else
+            {
+                /*string[] words = document.ToString().Split(',');
+                string[] temp = words[10].Split(':');
+                string x2 = temp[1].Substring(1, temp[1].Length - 1);
+                temp = words[11].Split(':');
+                string y2 = temp[1].Substring(1, temp[1].Length - 2);
+                coordinates[0] = Int32.Parse(x2);
+                coordinates[1] = Int32.Parse(y2);
+                return coordinates;*/
+                coordinates[0] = document["x2"].AsInt32;
+                coordinates[1] = document["y2"].AsInt32;
+            }
+            return coordinates;
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            timerVar++;
+            labelTimer.Text = "time elapsed: " + timerVar;
         }
 
         private void CheckGameStatus()
         {
             int grayCounter = 0;
-            int redCounter = 14;
+            int redCounter = 0;
             int greenCounter = 0;
             for (int i = 0; i < grid1.Size; i++)
                 for (int j = 0; j < grid1.Size; j++)
@@ -199,7 +271,7 @@ namespace battleship
                 VictoryDefeat defeat = new VictoryDefeat(false);
                 defeat.Show();
                 this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2);
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
                 scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
                 scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
                 System.Threading.Thread.Sleep(2000);
@@ -220,7 +292,7 @@ namespace battleship
                 VictoryDefeat defeat = new VictoryDefeat(false);
                 defeat.Show();
                 this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2);
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
                 scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
                 scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
                 System.Threading.Thread.Sleep(2000);
@@ -239,7 +311,7 @@ namespace battleship
                 VictoryDefeat vitory = new VictoryDefeat(true);
                 vitory.Show();
                 this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2);
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
                 scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
                 scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
                 System.Threading.Thread.Sleep(2000);
@@ -258,8 +330,8 @@ namespace battleship
                 VictoryDefeat vitory = new VictoryDefeat(true);
                 vitory.Show();
                 this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2);
-                scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
+                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
+                scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
                 scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
                 System.Threading.Thread.Sleep(2000);
                 scoreForm.Show();
@@ -294,11 +366,13 @@ namespace battleship
                     {
                         var updateHit = Builders<BsonDocument>.Update.Set("hit", true);
                         collection.UpdateOne(filter, updateHit);
+                        hit.Play_Sound();
                     }
                     else
                     {
                         var updateHit = Builders<BsonDocument>.Update.Set("hit", false);
                         collection.UpdateOne(filter, updateHit);
+                        miss.Play_Sound();
                     }
 
                     btnGrid1[newCoordinates[0], newCoordinates[1]].BackColor = Color.Gray;
@@ -358,52 +432,6 @@ namespace battleship
                     return false;
             }
             return false;
-        }
-
-        private void Push_Player_Choice(string p, string fieldName, string name)
-        {
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updateP = Builders<BsonDocument>.Update.Set(p, false);
-            var updatePName = Builders<BsonDocument>.Update.Set(fieldName, name);
-            collection.UpdateOne(filter, updateP);
-            collection.UpdateOne(filter, updatePName);
-        }
-
-        private int[] Pull_Coordinates()
-        {
-            int[] coordinates = { 0, 0 };
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
-            if (player == 2)
-            {
-                /*string[] words = document.ToString().Split(',');
-                string[] temp = words[1].Split(':');
-                string x = temp[1].Substring(1, temp[1].Length - 1);
-                temp = words[2].Split(':');
-                string y = temp[1].Substring(1, temp[1].Length - 1);
-                coordinates[0] = Int32.Parse(x);
-                coordinates[1] = Int32.Parse(y);
-                return coordinates;*/
-                coordinates[0] = document["x"].AsInt32;
-                coordinates[1] = document["y"].AsInt32;
-            }
-            else
-            {
-                /*string[] words = document.ToString().Split(',');
-                string[] temp = words[10].Split(':');
-                string x2 = temp[1].Substring(1, temp[1].Length - 1);
-                temp = words[11].Split(':');
-                string y2 = temp[1].Substring(1, temp[1].Length - 2);
-                coordinates[0] = Int32.Parse(x2);
-                coordinates[1] = Int32.Parse(y2);
-                return coordinates;*/
-                coordinates[0] = document["x2"].AsInt32;
-                coordinates[1] = document["y2"].AsInt32;
-            }
-            return coordinates;
         }
 
         private void populateGrid(int offset, Panel panel, Grid grid, Button[,] btnGrid)
@@ -477,11 +505,13 @@ namespace battleship
             {
                 clicked.BackColor = Color.Red;
                 clicked.Text = "";
+                hit.Play_Sound();
             }
             else
             {
                 clicked.BackColor = Color.Green;
                 clicked.Text = "";
+                miss.Play_Sound();
             }
 
             if (turn % 2 == 0 && Enabled_Buttons())
@@ -505,11 +535,9 @@ namespace battleship
                     {
                         btnGrid2[i, j].Click -= Grid_Button_Click;
                         check = false;
-
                     }
                 }
             }
-
             turn++;
             steps++;
         }
@@ -556,47 +584,11 @@ namespace battleship
             }
         }
 
-        private void Pull_ReadyP()
-        {
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filterP1 = Builders<BsonDocument>.Filter.Eq("p1Ready", true);
-            var filterP2 = Builders<BsonDocument>.Filter.Eq("p2Ready", true);
-            var documentP1 = collection.Find(filterP1).FirstOrDefault();
-            var documentP2 = collection.Find(filterP2).FirstOrDefault();
-            var (p1Ready, p2Ready) = (false, false);
-            try
-            {
-                p1Ready = documentP1["p1Ready"].AsBoolean;
-                p2Ready = documentP2["p2Ready"].AsBoolean;
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                if (p1Ready && p2Ready)
-                {
-                    Start_Game();
-                }
-            }
-        }
-
         private void P(string fieldReady)
         {
             stage = 2;
             timer_Pull.Start();
             Check_Ships(fieldReady);
-        }
-
-        private void Push_ReadyP(string fieldReady)
-        {
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-            var updatePReady = Builders<BsonDocument>.Update.Set(fieldReady, true);
-            collection.UpdateOne(filter, updatePReady);
         }
 
         private void Check_Ships(string fieldReady)
@@ -617,13 +609,9 @@ namespace battleship
         {
             timer.Start();
             if (player == 1)
-            {
                 P("p1Ready");
-            }
             else
-            {
                 P("p2Ready");
-            }
         }
 
         private void Start_Game()
@@ -639,14 +627,11 @@ namespace battleship
             if (player == 2)
             {
                 for (int i = 0; i < 10; i++)
-                {
                     for (int j = 0; j < 10; j++)
                     {
                         btnGrid2[i, j].Click -= Grid_Button_Click;
                         check = false;
-
                     }
-                }
             }
             else { }
         }
@@ -773,12 +758,6 @@ namespace battleship
 
         /* movement & rotation for each piscturebox end */
 
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            timerVar++;
-            labelTimer.Text = "time elapsed: " + timerVar;
-        }
-
         private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
         {
             if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
@@ -862,6 +841,11 @@ namespace battleship
             pictureBoxPlayer2.MouseLeave -= pictureBoxPlayer2_MouseLeave;
             pictureBoxPlayer2.Click -= pictureBoxPlayer2_Click;
             pictureBoxPlayer2.Cursor = Cursors.Default;
+        }
+
+        private void pictureBoxAudio_Click(object sender, EventArgs e)
+        {
+            bgMusic.Check_Sound(pictureBoxAudio);
         }
     }
 }

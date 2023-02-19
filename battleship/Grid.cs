@@ -25,6 +25,7 @@ namespace battleship
             }
         }
 
+        /* set CurrentlyOccupied property to false */
         public void ClearGrid()
         {
             for (int i = 0; i < Size; i++)

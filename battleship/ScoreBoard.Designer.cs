@@ -49,7 +49,9 @@
             this.labelWins = new System.Windows.Forms.Label();
             this.labelJackWins = new System.Windows.Forms.Label();
             this.labelCroitorWins = new System.Windows.Forms.Label();
+            this.pictureBoxAudio = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRematch)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).BeginInit();
             this.SuspendLayout();
             // 
             // labelTotalTurns
@@ -291,6 +293,17 @@
             this.labelCroitorWins.TabIndex = 22;
             this.labelCroitorWins.Text = "0";
             // 
+            // pictureBoxAudio
+            // 
+            this.pictureBoxAudio.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxAudio.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxAudio.Image")));
+            this.pictureBoxAudio.Location = new System.Drawing.Point(638, 3);
+            this.pictureBoxAudio.Name = "pictureBoxAudio";
+            this.pictureBoxAudio.Size = new System.Drawing.Size(82, 86);
+            this.pictureBoxAudio.TabIndex = 23;
+            this.pictureBoxAudio.TabStop = false;
+            this.pictureBoxAudio.Click += new System.EventHandler(this.pictureBoxAudio_Click);
+            // 
             // ScoreBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,6 +311,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
+            this.Controls.Add(this.pictureBoxAudio);
             this.Controls.Add(this.labelCroitorWins);
             this.Controls.Add(this.labelJackWins);
             this.Controls.Add(this.labelWins);
@@ -325,6 +339,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScoreBoard_FormClosing);
             this.Load += new System.EventHandler(this.ScoreBoard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRematch)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,5 +367,6 @@
         private System.Windows.Forms.Label labelWins;
         private System.Windows.Forms.Label labelJackWins;
         private System.Windows.Forms.Label labelCroitorWins;
+        private System.Windows.Forms.PictureBox pictureBoxAudio;
     }
 }

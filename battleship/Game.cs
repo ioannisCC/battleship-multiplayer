@@ -17,35 +17,17 @@ namespace battleship
 {
     public partial class Game : Form
     {
-        private WaveStream MusicStream;
-        private WaveOut MusicOut;
         int[] rainSpeeds = { 4, 6, 8, 3, 5, 6, 7, 4, 2 };
-        int loadingSpeed = 100;
+        int loadingSpeed = 100;   /* determines duration of loading screen */
         int winsP1 = 0;
         int winsP2 = 0;
         float initialPercentage = 0;
         MongoClient dbClient;
+        Audio bgMusic;
 
         public Game()
         {
             InitializeComponent();
-            //Play_Sound("Bear_McCreary_-Memories_of_Mother_Gratomic.com.wav");
-        }
-
-        private void Initialize_Database()
-        {
-            var database = dbClient.GetDatabase("battleship");
-            var collection = database.GetCollection<BsonDocument>("targetLocation");
-            var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
-        }
-
-        void Play_Sound(string filename)
-        {
-            MusicStream = new AudioFileReader(filename);
-            MusicOut = new WaveOut();
-            MusicOut.Init(MusicStream);
-            MusicStream.CurrentTime = new TimeSpan(0L);
-            MusicOut.Play();
         }
 
         private void Game_Load(object sender, EventArgs e)
@@ -53,8 +35,9 @@ namespace battleship
             groupBox1.Hide();
             labelInstructions.Hide();
             dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
-            Initialize_Database();
+            bgMusic = new Audio("bgMusic.mp3");
             buttonMainMenu.Hide();
+            bgMusic.Play_Sound();
         }
 
         /* loading screen code start*/
@@ -122,7 +105,6 @@ namespace battleship
                             pictureBox12.Location = new Point(pictureBox12.Location.X, 0 - pictureBox12.Size.Height);
                         }
                         break;
-
                 }
             }
         }
@@ -141,7 +123,7 @@ namespace battleship
                 this.timer1.Stop();
                 this.timer2.Stop();
                 this.Hide();
-                MainGame instance = new MainGame(dbClient, winsP1, winsP2);
+                MainGame instance = new MainGame(dbClient, winsP1, winsP2, bgMusic);
                 instance.Show();                
             }
         }
@@ -190,6 +172,11 @@ namespace battleship
             buttonPlay.Hide();
             buttonOptions.Hide();
             buttonExit.Hide();
+        }
+
+        private void pictureBoxAudio_Click(object sender, EventArgs e)
+        {
+            bgMusic.Check_Sound(pictureBoxAudio);
         }
     }
 }

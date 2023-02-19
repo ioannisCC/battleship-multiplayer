@@ -29,19 +29,37 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VictoryDefeat));
-            this.pictureBoxVictoryDefeat = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictoryDefeat)).BeginInit();
+            this.pictureBoxVictory = new System.Windows.Forms.PictureBox();
+            this.pictureBoxDefeat = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDefeat)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBoxVictoryDefeat
+            // pictureBoxVictory
             // 
-            this.pictureBoxVictoryDefeat.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxVictoryDefeat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBoxVictoryDefeat.Location = new System.Drawing.Point(304, 235);
-            this.pictureBoxVictoryDefeat.Name = "pictureBoxVictoryDefeat";
-            this.pictureBoxVictoryDefeat.Size = new System.Drawing.Size(739, 289);
-            this.pictureBoxVictoryDefeat.TabIndex = 0;
-            this.pictureBoxVictoryDefeat.TabStop = false;
+            this.pictureBoxVictory.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxVictory.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxVictory.BackgroundImage")));
+            this.pictureBoxVictory.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxVictory.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxVictory.Image")));
+            this.pictureBoxVictory.Location = new System.Drawing.Point(332, 207);
+            this.pictureBoxVictory.Name = "pictureBoxVictory";
+            this.pictureBoxVictory.Size = new System.Drawing.Size(739, 289);
+            this.pictureBoxVictory.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxVictory.TabIndex = 10;
+            this.pictureBoxVictory.TabStop = false;
+            // 
+            // pictureBoxDefeat
+            // 
+            this.pictureBoxDefeat.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxDefeat.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxDefeat.BackgroundImage")));
+            this.pictureBoxDefeat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBoxDefeat.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxDefeat.Image")));
+            this.pictureBoxDefeat.Location = new System.Drawing.Point(332, 207);
+            this.pictureBoxDefeat.Name = "pictureBoxDefeat";
+            this.pictureBoxDefeat.Size = new System.Drawing.Size(739, 289);
+            this.pictureBoxDefeat.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxDefeat.TabIndex = 11;
+            this.pictureBoxDefeat.TabStop = false;
             // 
             // VictoryDefeat
             // 
@@ -50,18 +68,22 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
-            this.Controls.Add(this.pictureBoxVictoryDefeat);
+            this.Controls.Add(this.pictureBoxDefeat);
+            this.Controls.Add(this.pictureBoxVictory);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VictoryDefeat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "VictoryDefeat";
             this.Load += new System.EventHandler(this.VictoryDefeat_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictoryDefeat)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictory)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDefeat)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBoxVictoryDefeat;
+        private System.Windows.Forms.PictureBox pictureBoxVictory;
+        private System.Windows.Forms.PictureBox pictureBoxDefeat;
     }
 }

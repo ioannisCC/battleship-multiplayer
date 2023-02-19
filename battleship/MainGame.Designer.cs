@@ -44,9 +44,8 @@
             this.timer_Pull = new System.Windows.Forms.Timer(this.components);
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.labelTimer = new System.Windows.Forms.Label();
-            this.pictureBoxVictory = new System.Windows.Forms.PictureBox();
-            this.pictureBoxDefeat = new System.Windows.Forms.PictureBox();
             this.pictureBoxEnterName = new System.Windows.Forms.PictureBox();
+            this.pictureBoxAudio = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPlayer1)).BeginInit();
@@ -54,9 +53,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictory)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDefeat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEnterName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonStart
@@ -221,27 +219,6 @@
             this.labelTimer.TabIndex = 7;
             this.labelTimer.Text = "Time elapsed: 0";
             // 
-            // pictureBoxVictory
-            // 
-            this.pictureBoxVictory.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxVictory.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxVictory.Image")));
-            this.pictureBoxVictory.Location = new System.Drawing.Point(382, 50);
-            this.pictureBoxVictory.Name = "pictureBoxVictory";
-            this.pictureBoxVictory.Size = new System.Drawing.Size(618, 230);
-            this.pictureBoxVictory.TabIndex = 9;
-            this.pictureBoxVictory.TabStop = false;
-            // 
-            // pictureBoxDefeat
-            // 
-            this.pictureBoxDefeat.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBoxDefeat.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxDefeat.Image")));
-            this.pictureBoxDefeat.Location = new System.Drawing.Point(382, 50);
-            this.pictureBoxDefeat.Name = "pictureBoxDefeat";
-            this.pictureBoxDefeat.Size = new System.Drawing.Size(618, 230);
-            this.pictureBoxDefeat.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxDefeat.TabIndex = 10;
-            this.pictureBoxDefeat.TabStop = false;
-            // 
             // pictureBoxEnterName
             // 
             this.pictureBoxEnterName.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxEnterName.BackgroundImage")));
@@ -251,6 +228,17 @@
             this.pictureBoxEnterName.TabIndex = 11;
             this.pictureBoxEnterName.TabStop = false;
             // 
+            // pictureBoxAudio
+            // 
+            this.pictureBoxAudio.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBoxAudio.Image = ((System.Drawing.Image)(resources.GetObject("pictureBoxAudio.Image")));
+            this.pictureBoxAudio.Location = new System.Drawing.Point(12, 8);
+            this.pictureBoxAudio.Name = "pictureBoxAudio";
+            this.pictureBoxAudio.Size = new System.Drawing.Size(82, 86);
+            this.pictureBoxAudio.TabIndex = 15;
+            this.pictureBoxAudio.TabStop = false;
+            this.pictureBoxAudio.Click += new System.EventHandler(this.pictureBoxAudio_Click);
+            // 
             // MainGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -259,11 +247,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1362, 801);
+            this.Controls.Add(this.pictureBoxAudio);
             this.Controls.Add(this.labelTimer);
             this.Controls.Add(this.pictureBoxEnterName);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.pictureBoxDefeat);
-            this.Controls.Add(this.pictureBoxVictory);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonStart);
@@ -282,9 +269,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxShip2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxVictory)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDefeat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEnterName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxAudio)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,8 +291,7 @@
         private System.Windows.Forms.Timer timer_Pull;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label labelTimer;
-        private System.Windows.Forms.PictureBox pictureBoxVictory;
-        private System.Windows.Forms.PictureBox pictureBoxDefeat;
         private System.Windows.Forms.PictureBox pictureBoxEnterName;
+        private System.Windows.Forms.PictureBox pictureBoxAudio;
     }
 }

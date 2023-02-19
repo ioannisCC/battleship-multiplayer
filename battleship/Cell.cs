@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace battleship
 {
+    /* represents each cell (button) of the grid */
     public class Cell
     {
         public int RowNumber { get; set; }
