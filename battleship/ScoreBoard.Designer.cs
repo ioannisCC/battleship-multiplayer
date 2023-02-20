@@ -201,11 +201,11 @@
             // 
             this.labelJackName.AutoSize = true;
             this.labelJackName.BackColor = System.Drawing.Color.Transparent;
-            this.labelJackName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelJackName.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelJackName.ForeColor = System.Drawing.Color.White;
-            this.labelJackName.Location = new System.Drawing.Point(73, 112);
+            this.labelJackName.Location = new System.Drawing.Point(66, 112);
             this.labelJackName.Name = "labelJackName";
-            this.labelJackName.Size = new System.Drawing.Size(68, 23);
+            this.labelJackName.Size = new System.Drawing.Size(85, 29);
             this.labelJackName.TabIndex = 15;
             this.labelJackName.Text = "label1";
             // 
@@ -249,11 +249,11 @@
             // 
             this.labelCroitorName.AutoSize = true;
             this.labelCroitorName.BackColor = System.Drawing.Color.Transparent;
-            this.labelCroitorName.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.labelCroitorName.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.labelCroitorName.ForeColor = System.Drawing.Color.White;
-            this.labelCroitorName.Location = new System.Drawing.Point(1186, 112);
+            this.labelCroitorName.Location = new System.Drawing.Point(1184, 112);
             this.labelCroitorName.Name = "labelCroitorName";
-            this.labelCroitorName.Size = new System.Drawing.Size(68, 23);
+            this.labelCroitorName.Size = new System.Drawing.Size(85, 29);
             this.labelCroitorName.TabIndex = 19;
             this.labelCroitorName.Text = "label1";
             // 

@@ -200,12 +200,6 @@
     <Compile Include="ScoreBoard.Designer.cs">
       <DependentUpon>ScoreBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="VictoryDefeat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VictoryDefeat.Designer.cs">
-      <DependentUpon>VictoryDefeat.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Game.resx">
       <DependentUpon>Game.cs</DependentUpon>
     </EmbeddedResource>
@@ -225,9 +219,6 @@
     </Compile>
     <EmbeddedResource Include="ScoreBoard.resx">
       <DependentUpon>ScoreBoard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VictoryDefeat.resx">
-      <DependentUpon>VictoryDefeat.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="libmongocrypt.dylib" />
     <None Include="libmongocrypt.so" />

@@ -18,12 +18,12 @@ namespace battleship
     public partial class Game : Form
     {
         int[] rainSpeeds = { 4, 6, 8, 3, 5, 6, 7, 4, 2 };
-        int loadingSpeed = 100;   /* determines duration of loading screen */
+        int loadingSpeed = 30;   /* determines duration of loading screen */
         int winsP1 = 0;
         int winsP2 = 0;
         float initialPercentage = 0;
         MongoClient dbClient;
-        Audio bgMusic;
+        Audio sound;
 
         public Game()
         {
@@ -35,9 +35,9 @@ namespace battleship
             groupBox1.Hide();
             labelInstructions.Hide();
             dbClient = new MongoClient("mongodb+srv://battleshipGame:unipi@cluster0.f3k5ehu.mongodb.net/?retryWrites=true&w=majority");
-            bgMusic = new Audio("bgMusic.mp3");
+            sound = new Audio("bgMusic.mp3");
             buttonMainMenu.Hide();
-            bgMusic.Play_Sound();
+            sound.Play_BgSound();
         }
 
         /* loading screen code start*/
@@ -123,7 +123,7 @@ namespace battleship
                 this.timer1.Stop();
                 this.timer2.Stop();
                 this.Hide();
-                MainGame instance = new MainGame(dbClient, winsP1, winsP2, bgMusic);
+                MainGame instance = new MainGame(dbClient, winsP1, winsP2, sound);
                 instance.Show();                
             }
         }
@@ -176,7 +176,7 @@ namespace battleship
 
         private void pictureBoxAudio_Click(object sender, EventArgs e)
         {
-            bgMusic.Check_Sound(pictureBoxAudio);
+           sound.Check_Sound(pictureBoxAudio);
         }
     }
 }

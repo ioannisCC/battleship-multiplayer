@@ -22,9 +22,9 @@ namespace battleship
         private int winsP2 = 0;
         int timeVar = 0;
         MongoClient dbClient;
-        Audio bgMusic;
+        Audio sound;
 
-        public ScoreBoard(int steps, int hits, int misses, int player, MongoClient dbClient, int timeVar, int winsP1, int winsP2, Audio bgMusic)
+        public ScoreBoard(int steps, int hits, int misses, int player, MongoClient dbClient, int timeVar, int winsP1, int winsP2, Audio sound)
         {
             InitializeComponent();
             this.steps = steps;
@@ -35,7 +35,7 @@ namespace battleship
             this.timeVar = timeVar;
             this.winsP1 = winsP1;
             this.winsP2 = winsP2;
-            this.bgMusic = bgMusic;
+            this.sound = sound;
         }
 
         private void ScoreBoard_Load(object sender, EventArgs e)
@@ -107,7 +107,7 @@ namespace battleship
         private void Rematch()
         {
             this.Hide();
-            MainGame rematchMaingame = new MainGame(dbClient,winsP1,winsP2, bgMusic);
+            MainGame rematchMaingame = new MainGame(dbClient,winsP1,winsP2, sound);
             rematchMaingame.Show();
         }
 
@@ -128,7 +128,7 @@ namespace battleship
 
         private void pictureBoxAudio_Click(object sender, EventArgs e)
         {
-            bgMusic.Check_Sound(pictureBoxAudio);
+            sound.Check_Sound(pictureBoxAudio);
         }
     }
 }

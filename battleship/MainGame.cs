@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,32 +17,29 @@ namespace battleship
      * password: unipi */
     public partial class MainGame : Form
     {
-        bool check = true; /* used to disable the mouse click event whenever is the other's player turn */
-        bool allowClick = true;
-        bool PictureBoxPlayer1 = true; /* true means captain1 (jack) is available */
-        bool PictureBoxPlayer2 = true; /* true means captain2 (croitor) is available */
-        int player = 0; /* which player are you (1: jack or 2: croitor) */
-        int stage = 1;  /* used at timer_Pull in order to determine eacg stage of the game (captain choice, ship placement, game itself) */
-        int winsP1 = 0;
-        int winsP2 = 0;
-        int turn = 1;  /* which players turn is */
-        int oldX = 0, oldY = 0;
-        int steps = 0; /* # of turns in order to terminate the game */
-        int timerVar; /* game duration */
-        int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0; /* for ships rotation */
-        public static string name; /* player's name */
-        public bool stopDragDrop = true;
-        bool exist = false; /* in order to make clickable only the second grid */
-        static Grid grid1 = new Grid(10);
-        static Grid grid2 = new Grid(10);
-        public Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
-        public Button[,] btnGrid2 = new Button[grid2.Size, grid2.Size];
-        Point offset;
-        Point mousePosition;
-        MongoClient dbClient;
-        Audio bgMusic;
-        Audio hit;
-        Audio miss;
+        private bool check = true; /* used to disable the mouse click event whenever is the other's player turn */
+        private bool allowClick = true;
+        private bool PictureBoxPlayer1 = true; /* true means captain1 (jack) is available */
+        private bool PictureBoxPlayer2 = true; /* true means captain2 (croitor) is available */
+        private int stage = 1;  /* used at timer_Pull in order to determine eacg stage of the game (captain choice, ship placement, game itself) */
+        private int winsP1 = 0;
+        private int winsP2 = 0;
+        private int turn = 1;  /* which players turn is */
+        private int oldX = 0, oldY = 0;
+        private int steps = 0; /* # of turns in order to terminate the game */
+        private int timerVar; /* game duration */
+        private int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0; /* for ships rotation */
+        private bool stopDragDrop = true;
+        private bool exist = false; /* in order to make clickable only the second grid */
+        private static Grid grid1 = new Grid(10);
+        private static Grid grid2 = new Grid(10);
+        private Button[,] btnGrid1 = new Button[grid1.Size, grid1.Size];
+        private Button[,] btnGrid2 = new Button[grid2.Size, grid2.Size];
+        private Point offset;
+        private Point mousePosition;
+        private MongoClient dbClient;
+        private Audio sound;
+        private Player playerP;
 
 
         public MainGame(MongoClient dbClient, int winsP1, int winsP2, Audio bgMusic)
@@ -53,7 +51,7 @@ namespace battleship
             pictureBoxShip5.MouseMove += new MouseEventHandler(pictureBoxShip5_MouseMove);
             this.winsP1 = winsP1;
             this.winsP2 = winsP2;
-            this.bgMusic = bgMusic;
+            this.sound = bgMusic;
         }
 
         private void MainGame_Load(object sender, EventArgs e)
@@ -61,8 +59,6 @@ namespace battleship
             Initialize_Database();
             Bitmap bm = new Bitmap(new Bitmap("scope.png"), 50, 50);
             Cursor = new Cursor(bm.GetHicon());
-            hit = new Audio("explosion.mp3");
-            miss = new Audio("splash.mp3");
             pictureBoxShip5.AllowDrop = true;
             pictureBoxShip2.Hide();
             pictureBoxShip3.Hide();
@@ -116,7 +112,7 @@ namespace battleship
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
 
-            if (player == 1)
+            if (playerP.playerGetSet == 1)
             {
                 var updateHitsP1 = Builders<BsonDocument>.Update.Set("hitsP1", redCounter);
                 var updateMissesP1 = Builders<BsonDocument>.Update.Set("missesP1", greenCounter);
@@ -207,7 +203,7 @@ namespace battleship
             var database = dbClient.GetDatabase("battleship");
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             BsonDocument document = collection.Find(new BsonDocument()).FirstOrDefault();
-            if (player == 2)
+            if (playerP.playerGetSet == 2)
             {
                 /*string[] words = document.ToString().Split(',');
                 string[] temp = words[1].Split(':');
@@ -239,7 +235,7 @@ namespace battleship
         private void timer_Tick(object sender, EventArgs e)
         {
             timerVar++;
-            labelTimer.Text = "time elapsed: " + timerVar;
+            labelTimer.Text = "Time elapsed: " + timerVar;
         }
 
         private void CheckGameStatus()
@@ -259,97 +255,55 @@ namespace battleship
                     else if (btnGrid2[i, j].BackColor == Color.Green)
                         greenCounter++;
 
-            if (grayCounter == 14 && player == 1)
+            if (grayCounter == 14 && playerP.playerGetSet == 1)
             {
-                timer_Pull.Stop();
-                timer.Stop();
-                panel1.Hide();
-                panel2.Hide();
                 winsP2++;
-                //MessageBox.Show("captain croitor wins");
-                Push_Statistics(redCounter, greenCounter);
-                VictoryDefeat defeat = new VictoryDefeat(false);
-                defeat.Show();
-                this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
-                scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
-                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
-                System.Threading.Thread.Sleep(2000);
-                this.Hide();
-                scoreForm.Show();
-                defeat.Close();
+                End_Game("croitorWins.jpg", redCounter, greenCounter);
             }
-            else if (grayCounter == 14 && player == 2)
+            else if (grayCounter == 14 && playerP.playerGetSet == 2)
             {
-                timer_Pull.Stop();
-                timer.Stop();
-                panel1.Hide();
-                panel2.Hide();
                 winsP1++;
-                steps++;
-                //MessageBox.Show("captain Jack wins");
-                Push_Statistics(redCounter, greenCounter);
-                VictoryDefeat defeat = new VictoryDefeat(false);
-                defeat.Show();
-                this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
-                scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
-                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
-                System.Threading.Thread.Sleep(2000);
-                scoreForm.Show();
-                defeat.Close();
+                End_Game("jackWins.jpg", redCounter, greenCounter);
             }
-            else if (redCounter == 14 && player == 1)
+            else if (redCounter == 14 && playerP.playerGetSet == 1)
             {
-                timer_Pull.Stop();
-                timer.Stop();
-                panel1.Hide();
-                panel2.Hide();
                 winsP1++;
-                //MessageBox.Show("captain jack wins");
-                Push_Statistics(redCounter, greenCounter);
-                VictoryDefeat vitory = new VictoryDefeat(true);
-                vitory.Show();
-                this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
-                scoreForm.BackgroundImage = Image.FromFile("jackWins.jpg");
-                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
-                System.Threading.Thread.Sleep(2000);
-                scoreForm.Show();
-                vitory.Close();
+                End_Game("jackWins.jpg", redCounter, greenCounter);
+                playerP.winsGetSet++;
             }
-            else if (redCounter == 14 && player == 2)
+            else if (redCounter == 14 && playerP.playerGetSet == 2)
             {
-                timer_Pull.Stop();
-                timer.Stop();
-                panel1.Hide();
-                panel2.Hide();
                 winsP2++;
-                //MessageBox.Show("captain croitor wins");
-                Push_Statistics(redCounter, greenCounter);
-                VictoryDefeat vitory = new VictoryDefeat(true);
-                vitory.Show();
-                this.Hide();
-                ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, player, dbClient, timerVar, winsP1, winsP2, bgMusic);
-                scoreForm.BackgroundImage = Image.FromFile("croitorWins.jpg");
-                scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
-                System.Threading.Thread.Sleep(2000);
-                scoreForm.Show();
-                vitory.Close();
+                End_Game("croitorWins.jpg", redCounter, greenCounter);
+                playerP.winsGetSet++;
             }
+        }
 
+        private void End_Game(string filename, int redCounter, int greenCounter)
+        {
+            timer_Pull.Stop();
+            timer.Stop();
+            panel1.Hide();
+            panel2.Hide();
+            Push_Statistics(redCounter, greenCounter);
+            this.Hide();
+            ScoreBoard scoreForm = new ScoreBoard(steps, redCounter, greenCounter, playerP.playerGetSet, dbClient, timerVar, winsP1, winsP2, sound);
+            scoreForm.BackgroundImage = Image.FromFile(filename);
+            scoreForm.BackgroundImageLayout = ImageLayout.Stretch;
+            Thread.Sleep(2000);
+            this.Hide();
+            scoreForm.Show();
         }
 
         private void timer_Pull_Tick(object sender, EventArgs e)
         {
-
             if (stage == 1)
             {
                 Pull_Player_Choice();
-                if (!PictureBoxPlayer1)     //gia na menei topika kitrino
-                    pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
+                if (!PictureBoxPlayer1)     /* make the captains pictureboxes unavailable */
+                    pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
                 if (!PictureBoxPlayer2)
-                    pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
+                    pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
             }
             else if (stage == 2)
                 Pull_ReadyP();
@@ -366,21 +320,24 @@ namespace battleship
                     {
                         var updateHit = Builders<BsonDocument>.Update.Set("hit", true);
                         collection.UpdateOne(filter, updateHit);
-                        hit.Play_Sound();
+                        sound.Hit();
                     }
                     else
                     {
                         var updateHit = Builders<BsonDocument>.Update.Set("hit", false);
                         collection.UpdateOne(filter, updateHit);
-                        miss.Play_Sound();
+                        sound.Miss();
                     }
 
+                    /* color the grid1 with your ships */
                     btnGrid1[newCoordinates[0], newCoordinates[1]].BackColor = Color.Gray;
                     btnGrid1[newCoordinates[0], newCoordinates[1]].ForeColor = Color.Gray;
 
                     oldX = newCoordinates[0];
                     oldY = newCoordinates[1];
 
+
+                    /* check who's turn is and add the click event to the button grid depending on which player you are */
                     if (turn % 2 == 0 && !Enabled_Buttons())
                     {
                         for (int i = 0; i < 10; i++)
@@ -389,7 +346,6 @@ namespace battleship
                             {
                                 btnGrid2[i, j].Click += Grid_Button_Click;
                                 check = true;
-
                             }
                         }
                     }
@@ -402,7 +358,6 @@ namespace battleship
                             {
                                 btnGrid2[i, j].Click += Grid_Button_Click;
                                 check = true;
-
                             }
                         }
                     }
@@ -413,6 +368,7 @@ namespace battleship
                 timer_Pull.Stop();
         }
 
+        /* returns if the other player is done with his turn */
         private bool Color_Buttons()
         {
             var database = dbClient.GetDatabase("battleship");
@@ -422,6 +378,7 @@ namespace battleship
             return document["hit"].AsBoolean;
         }
 
+        /* checks if the buttons of grid2 (where you shoot) are available */
         private bool Enabled_Buttons()
         {
             foreach (Button button in btnGrid2)
@@ -431,6 +388,7 @@ namespace battleship
                 else
                     return false;
             }
+
             return false;
         }
 
@@ -438,7 +396,6 @@ namespace battleship
         {
             int buttonSize = (panel.Width / offset) / grid.Size;  /* we needed offset because panel sizes are difernet each time */
             panel.Height = panel.Width;
-
 
             for (int i = 0; i < grid.Size; i++)
             {
@@ -451,6 +408,7 @@ namespace battleship
                     btnGrid[i, j].FlatStyle = FlatStyle.Popup;
                     btnGrid[i, j].ForeColor = Color.Transparent;
 
+                    /* add the click event only to buttons that belong to the grid you shoot */
                     if (exist)
                         btnGrid2[i, j].Click += new EventHandler(Grid_Button_Click);
 
@@ -486,7 +444,7 @@ namespace battleship
             var collection = database.GetCollection<BsonDocument>("targetLocation");
             var filter = Builders<BsonDocument>.Filter.Eq("_id", "1");
 
-            if (player == 1)
+            if (playerP.playerGetSet == 1)
             {
                 var updateX = Builders<BsonDocument>.Update.Set("x", Int32.Parse(clicked.Text.Substring(0, 1)));
                 var updateY = Builders<BsonDocument>.Update.Set("y", Int32.Parse(clicked.Text.Substring(clicked.Text.Length - 1)));
@@ -500,18 +458,18 @@ namespace battleship
                 collection.UpdateOne(filter, updateX2);
                 collection.UpdateOne(filter, updateY2);
             }
-            System.Threading.Thread.Sleep(1000);  //gia na prolabei na kanei push
+            Thread.Sleep(1000);  /* in order to have time to get the data to the database */
             if (Color_Buttons())
             {
                 clicked.BackColor = Color.Red;
                 clicked.Text = "";
-                hit.Play_Sound();
+                sound.Hit();
             }
             else
             {
                 clicked.BackColor = Color.Green;
                 clicked.Text = "";
-                miss.Play_Sound();
+                sound.Miss();
             }
 
             if (turn % 2 == 0 && Enabled_Buttons())
@@ -522,7 +480,6 @@ namespace battleship
                     {
                         btnGrid2[i, j].Click -= Grid_Button_Click;
                         check = false;
-
                     }
                 }
             }
@@ -538,13 +495,9 @@ namespace battleship
                     }
                 }
             }
+
             turn++;
             steps++;
-        }
-
-        private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.Exit();
         }
 
         /* check with many cells on the grid the pictuebox is colliding */
@@ -584,14 +537,7 @@ namespace battleship
             }
         }
 
-        private void P(string fieldReady)
-        {
-            stage = 2;
-            timer_Pull.Start();
-            Check_Ships(fieldReady);
-        }
-
-        private void Check_Ships(string fieldReady)
+        private void Check_Ships()
         {
             if (!(Check_Positioning(pictureBoxShip5, 5, "aircraft carrier") &&
         Check_Positioning(pictureBoxShip4, 4, "destroyer") &&
@@ -600,18 +546,16 @@ namespace battleship
             { }
             else
             {
-                Push_ReadyP(fieldReady);
+                Push_ReadyP(playerP.fieldNameGetSet);
             }
         }
 
         /* check positioning and start game */
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            timer.Start();
-            if (player == 1)
-                P("p1Ready");
-            else
-                P("p2Ready");
+            stage = playerP.stageGetSet;
+            playerP.P(playerP, 2, timer_Pull);
+            Check_Ships();
         }
 
         private void Start_Game()
@@ -622,9 +566,11 @@ namespace battleship
             stopDragDrop = false;
             labelTimer.Show();
             buttonStart.Hide();
+            timer.Start();
             panel1.Width = panel1.Width / 2;
             populateGrid(1, panel2, grid2, btnGrid2);
-            if (player == 2)
+
+            if (playerP.playerGetSet == 2)
             {
                 for (int i = 0; i < 10; i++)
                     for (int j = 0; j < 10; j++)
@@ -633,7 +579,6 @@ namespace battleship
                         check = false;
                     }
             }
-            else { }
         }
 
         void Location_Offset(MouseEventArgs e, PictureBox pictureBox)
@@ -647,7 +592,7 @@ namespace battleship
             }
         }
 
-        /* mousePosition added so the picturebox will update its location on a thrshold of 5 so it does not glitch */
+        /* mousePosition added so the picturebox will update its location on a thrshold of 5 so it does not glitch  and that drag and drop works*/
         void Transition_Glitch(MouseEventArgs e, PictureBox pictureBox)
         {
             if (e.Button == MouseButtons.Left)
@@ -760,27 +705,23 @@ namespace battleship
 
         private void pictureBoxPlayer1_MouseEnter(object sender, EventArgs e)
         {
-            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
+            if (PictureBoxPlayer1 && allowClick) /* if pictureBoxPlayer1 is available you can hover it and click it */
                 pictureBoxPlayer1.ImageLocation = "Captain1hover.png";
-            else { }
-                //pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
         }
 
         private void pictureBoxPlayer1_MouseLeave(object sender, EventArgs e)
         {
 
-            if (PictureBoxPlayer1 && allowClick) //if pictureBoxPlayer1 is available you can hover it and click it
-                pictureBoxPlayer1.ImageLocation = "Captain1.png";
-            else { }
-                //pictureBoxPlayer1.ImageLocation = "Captain1checked.png";
+            if (PictureBoxPlayer1 && allowClick) /* if pictureBoxPlayer1 is available you can hover it and click it */
+                pictureBoxPlayer1.ImageLocation = "Captain1.png"; 
         }
 
         private void pictureBoxPlayer1_Click(object sender, EventArgs e)
         {
             if (PictureBoxPlayer1 && allowClick && !string.IsNullOrEmpty(textBoxName.Text))
             {
-                player = 1;
-                Push_Player_Choice("p1", "p1Name", textBoxName.Text);
+                playerP = new Player("p1Ready", 1, winsP1, 2, textBoxName.Text);
+                Push_Player_Choice("p1", "p1Name", playerP.nameGetSet);
                 Disable_Captain1();
                 Disable_Captain2();
                 allowClick = false;
@@ -793,26 +734,22 @@ namespace battleship
 
         private void pictureBoxPlayer2_MouseEnter(object sender, EventArgs e)
         {
-            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+            if (PictureBoxPlayer2 && allowClick) /* if pictureBoxPlayer2 is available you can hover it and click it */
                 pictureBoxPlayer2.ImageLocation = "Captain2hover.png";
-            else { }
-                //pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
         }
 
         private void pictureBoxPlayer2_MouseLeave(object sender, EventArgs e)
         {
-            if (PictureBoxPlayer2 && allowClick) //if pictureBoxPlayer2 is available you can hover it and click it
+            if (PictureBoxPlayer2 && allowClick) /* if pictureBoxPlayer2 is available you can hover it and click it */
                 pictureBoxPlayer2.ImageLocation = "Captain2.png";
-            else { }
-                //pictureBoxPlayer2.ImageLocation = "Captain2checked.png";
         }
 
         private void pictureBoxPlayer2_Click(object sender, EventArgs e)
         {
             if (PictureBoxPlayer2 && allowClick && !string.IsNullOrEmpty(textBoxName.Text))
             {
-                player = 2;
-                Push_Player_Choice("p2", "p2Name", textBoxName.Text);
+                playerP = new Player("p2Ready", 2,winsP2,2,textBoxName.Text);
+                Push_Player_Choice("p2", "p2Name", playerP.nameGetSet);
                 Disable_Captain1();
                 Disable_Captain2();
                 allowClick = false;
@@ -845,7 +782,12 @@ namespace battleship
 
         private void pictureBoxAudio_Click(object sender, EventArgs e)
         {
-            bgMusic.Check_Sound(pictureBoxAudio);
+            sound.Check_Sound(pictureBoxAudio);
+        }
+
+        private void MainGame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
