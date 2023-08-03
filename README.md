@@ -15,7 +15,7 @@ C# multiplayer battleship game
 
 
 
-##Introduction
+Introduction
 
 This documentation provides an overview of the Classic Battleship Game developed using C# and a cluster MongoDB. The game is a digital adaptation of the popular board game Battleship, where two players take turns guessing the locations of each other's ships on a grid. The game has been implemented using C# programming language and utilizes a cluster MongoDB to store game data and player records.
 
